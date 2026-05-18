@@ -6905,7 +6905,7 @@ body.sidebar-collapsed:not(.ride-mode) .timeline-control-dock #intensitySlider{
 }
 /* Timeline height and spacing adjustment */
 .main{
-  padding-top:18px;
+  padding-top:0px;
 }
 
 .timeline{
