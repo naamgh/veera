@@ -6909,7 +6909,7 @@ body.sidebar-collapsed:not(.ride-mode) .timeline-control-dock #intensitySlider{
 }
 
 .timeline{
-  margin-top:18px;
+  margin-top:0px;
 }
 
 #graph{
@@ -6930,11 +6930,11 @@ body.sidebar-collapsed #graph{
 }
 
 .timeline-hud-panel{
-  min-height:calc(var(--hud-height, 230px) - 75px);
+  min-height:calc(var(--hud-height, 200px) - 75px);
 }
 
 .hud-dice-layout{
-  min-height:calc(var(--hud-height, 230px) - 75px);
+  min-height:calc(var(--hud-height, 200px) - 75px);
 }
 
 .metric.hud-small-item,
