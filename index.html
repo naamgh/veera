@@ -42,7 +42,14 @@ body{
   width:100%;
   max-width:660px;
 }
+.launch-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+}
 .launch-card{
+  width:100%;
   aspect-ratio:1 / 1;
   border-radius:34px;
   text-decoration:none;
@@ -81,6 +88,22 @@ body{
 }
 .launch-card.secondary{
   background:linear-gradient(135deg,#bae6fd,#a78bfa);
+}
+.requirements{
+  width:100%;
+  padding:0 8px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  text-align:left;
+}
+.requirements strong{
+  display:block;
+  margin-bottom:4px;
+  color:#374151;
+  font-size:12px;
+  letter-spacing:.02em;
+  text-transform:uppercase;
 }
 .content-grid{
   max-width:1320px;
@@ -131,8 +154,18 @@ body{
 <body>
 <section class="launch-wrap">
   <div class="launch-grid">
-    <a class="launch-card" href="/app/"><span>TRAINER</span></a>
-    <a class="launch-card secondary" href="/workout-builder/"><span>WORKOUT<br>BUILDER</span></a>
+    <div class="launch-item">
+      <a class="launch-card" href="/app/"><span>TRAINER</span></a>
+      <div class="requirements">
+        <strong>System Requirements</strong>
+        - Chrome Browser<br>
+        - Bluetooth / ANT+
+      </div>
+    </div>
+
+    <div class="launch-item">
+      <a class="launch-card secondary" href="/workout-builder/"><span>WORKOUT<br>BUILDER</span></a>
+    </div>
   </div>
 </section>
 
