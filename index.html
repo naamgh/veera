@@ -28,86 +28,63 @@ body{
     linear-gradient(180deg,#ffffff,#f8fafc 60%,#ffffff);
   min-height:100vh;
 }
-.hero-wrap{
-  padding:28px;
+.launch-wrap{
+  min-height:58vh;
+  padding:56px 28px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.hero{
-  max-width:1320px;
-  margin:0 auto;
+.launch-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(220px, 300px));
+  gap:24px;
+  width:100%;
+  max-width:660px;
+}
+.launch-card{
+  aspect-ratio:1 / 1;
   border-radius:34px;
-  padding:42px;
-  background:linear-gradient(135deg,#111827,#182235 60%,#0f172a);
+  text-decoration:none;
   color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-size:28px;
+  font-weight:950;
+  letter-spacing:-.04em;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  box-shadow:0 24px 55px rgba(125,211,252,.24);
+  transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
   position:relative;
   overflow:hidden;
-  box-shadow:var(--shadow);
 }
-.hero:after{
+.launch-card:after{
   content:"";
   position:absolute;
-  width:360px;
-  height:360px;
-  border-radius:50%;
-  right:-120px;
-  top:-120px;
-  background:radial-gradient(circle,rgba(125,211,252,.55),transparent 65%);
+  width:180px;
+  height:180px;
+  border-radius:999px;
+  right:-70px;
+  top:-70px;
+  background:rgba(255,255,255,.22);
 }
-.hero-content{
+.launch-card span{
   position:relative;
   z-index:1;
 }
-.hero h1{
-  margin:0;
-  font-size:64px;
-  letter-spacing:-.07em;
-  line-height:.92;
+.launch-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 30px 70px rgba(167,139,250,.28);
+  filter:saturate(1.06);
 }
-.hero p{
-  margin-top:18px;
-  max-width:720px;
-  font-size:18px;
-  color:#cbd5e1;
-  line-height:1.6;
-}
-.hero-actions{
-  display:flex;
-  gap:14px;
-  margin-top:28px;
-  flex-wrap:wrap;
-}
-.hero-actions a{
-  text-decoration:none;
-}
-.btn{
-  border:none;
-  border-radius:18px;
-  padding:16px 24px;
-  font-weight:900;
-  font-size:15px;
-  letter-spacing:.02em;
-  cursor:pointer;
-  transition:transform .16s ease, box-shadow .16s ease;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:220px;
-}
-.btn:hover{
-  transform:translateY(-2px);
-}
-.btn-primary{
-  background:linear-gradient(135deg,var(--primary),var(--accent));
-  color:#fff;
-  box-shadow:0 16px 34px rgba(125,211,252,.22);
-}
-.btn-secondary{
-  background:rgba(255,255,255,.08);
-  color:#fff;
-  border:1px solid rgba(255,255,255,.14);
+.launch-card.secondary{
+  background:linear-gradient(135deg,#bae6fd,#a78bfa);
 }
 .content-grid{
   max-width:1320px;
-  margin:22px auto 40px;
+  margin:0 auto 40px;
   padding:0 28px;
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -131,62 +108,45 @@ body{
   line-height:1.7;
   white-space:pre-wrap;
 }
-.content-box h1,
-.content-box h2,
-.content-box h3{
-  margin-top:0;
-}
 .footer-note{
   margin-top:18px;
   font-size:13px;
   color:var(--muted);
 }
-@media(max-width:900px){
-  .hero h1{
-    font-size:46px;
+@media(max-width:760px){
+  .launch-wrap{
+    min-height:50vh;
+    padding-top:34px;
+  }
+  .launch-grid{
+    grid-template-columns:1fr;
+    max-width:320px;
   }
   .content-grid{
     grid-template-columns:1fr;
-  }
-  .btn{
-    width:100%;
   }
 }
 </style>
 </head>
 <body>
-<div class="hero-wrap">
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Veera</h1>
-      <p>
-        A modern indoor training ecosystem focused on structured workouts, clean visuals,
-        and a refined athlete experience.
-      </p>
-
-      <div class="hero-actions">
-        <a href="/app/"><button class="btn btn-primary">TRAINER</button></a>
-        <a href="/workout-builder/"><button class="btn btn-secondary">WORKOUT BUILDER</button></a>
-      </div>
-    </div>
-  </section>
-</div>
+<section class="launch-wrap">
+  <div class="launch-grid">
+    <a class="launch-card" href="/app/"><span>TRAINER</span></a>
+    <a class="launch-card secondary" href="/workout-builder/"><span>WORKOUT<br>BUILDER</span></a>
+  </div>
+</section>
 
 <section class="content-grid">
   <div class="card">
     <h2>Updates</h2>
     <div id="updates" class="content-box">Loading updates...</div>
-    <div class="footer-note">
-      Edit content/updates.md in GitHub to post updates.
-    </div>
+    <div class="footer-note">Edit content/updates.md in GitHub to post updates.</div>
   </div>
 
   <div class="card">
     <h2>To Do List</h2>
     <div id="todo" class="content-box">Loading tasks...</div>
-    <div class="footer-note">
-      Edit content/todo.md in GitHub to update roadmap items.
-    </div>
+    <div class="footer-note">Edit content/todo.md in GitHub to update roadmap items.</div>
   </div>
 </section>
 
@@ -200,7 +160,6 @@ async function loadContent(path,id){
     document.getElementById(id).textContent = 'Unable to load content.';
   }
 }
-
 loadContent('/content/updates.md','updates');
 loadContent('/content/todo.md','todo');
 </script>
