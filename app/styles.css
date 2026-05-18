@@ -6903,3 +6903,42 @@ body.sidebar-collapsed:not(.ride-mode) .timeline-control-dock #intensitySlider{
   min-width:280px !important;
   max-width:280px !important;
 }
+/* Timeline height and spacing adjustment */
+.main{
+  padding-top:18px;
+}
+
+.timeline{
+  margin-top:18px;
+}
+
+#graph{
+  height:225px;
+}
+
+.app.focus-mode #graph,
+body.sidebar-collapsed #graph{
+  height:355px;
+}
+
+.ride-mode .timeline{
+  padding-top:18px;
+}
+
+.ride-mode #graph{
+  height:calc(100% - 75px) !important;
+}
+
+.timeline-hud-panel{
+  min-height:calc(var(--hud-height, 230px) - 75px);
+}
+
+.hud-dice-layout{
+  min-height:calc(var(--hud-height, 230px) - 75px);
+}
+
+.metric.hud-small-item,
+.metric.hud-power-item,
+.hud-timer-item{
+  min-height:calc(132px - 75px);
+}
