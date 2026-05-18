@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Veera Workout Builder</title>
+<style>
+:root{
+  --bg:#ffffff;
+  --page:#f4f7fb;
+  --panel:#ffffff;
+  --panel2:#f8fafc;
+  --ink:#101828;
+  --text:#101828;
+  --muted:#667085;
+  --line:#e4e7ec;
+  --line-strong:#cbd5e1;
+  --orange:#fc6719;
+  --orange2:#ff8a00;
+  --blue:#05a9f5;
+  --blue2:#0066ff;
+  --aqua:#18d5c8;
+  --green:#2dd36f;
+  --yellow:#ffcf33;
+  --danger:#ef4444;
+  --shadow:0 18px 45px rgba(16,24,40,.10);
+  --shadow-soft:0 8px 22px rgba(16,24,40,.08);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 16% -5%, rgba(252,103,25,.16), transparent 30%),
+    radial-gradient(circle at 92% 4%, rgba(5,169,245,.16), transparent 26%),
+    linear-gradient(180deg,#fff 0%,#f4f7fb 42%,#eef4fb 100%);
+  color:var(--text);
+  min-height:100vh;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:linear-gradient(rgba(16,24,40,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(16,24,40,.035) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.6),transparent 70%);
+}
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(228,231,236,.9);
+  padding:14px 18px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  box-shadow:0 6px 20px rgba(16,24,40,.06);
+}
+h1{
+  margin:0;
+  font-size:21px;
+  letter-spacing:-.03em;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+h1:before{
+  content:"";
+  width:34px;
+  height:34px;
+  display:inline-block;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--orange),var(--blue));
+  box-shadow:0 10px 20px rgba(252,103,25,.22);
+}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+button,input,textarea,select{font:inherit}
+button{
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,#fff,#f8fafc);
+  color:var(--ink);
+  border-radius:14px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-weight:750;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease,color .18s ease;
+  box-shadow:0 4px 12px rgba(16,24,40,.06);
+}
+button:hover{
+  transform:translateY(-2px);
+  border-color:rgba(5,169,245,.55);
+  box-shadow:0 12px 26px rgba(5,169,245,.16);
+}
+button:active{transform:translateY(0) scale(.98)}
+button.primary{
+  background:linear-gradient(135deg,var(--orange),var(--orange2));
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 12px 26px rgba(252,103,25,.22);
+}
+button.primary:hover{box-shadow:0 16px 34px rgba(252,103,25,.32)}
+button.danger,.danger{color:var(--danger)}
+button.danger:hover{border-color:rgba(239,68,68,.38);box-shadow:0 12px 26px rgba(239,68,68,.12)}
+.app{
+  display:grid;
+  grid-template-columns:280px 250px minmax(420px,1fr) 360px;
+  gap:18px;
+  padding:18px;
+  max-width:1780px;
+  margin:0 auto;
+  align-items:stretch;
+}
+.card{
+  height:100%;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(228,231,236,.95);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+  animation:cardIn .38s ease both;
+}
+.card:before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:5px;
+  background:linear-gradient(90deg,var(--orange),var(--blue),var(--aqua));
+  opacity:.92;
+}
+.card:hover{box-shadow:0 24px 58px rgba(16,24,40,.14);transform:translateY(-1px)}
+.card{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.card h2{
+  font-size:15px;
+  margin:0 0 12px;
+  letter-spacing:-.01em;
+  color:#182230;
+}
+.section{padding:18px}
+.field{margin:10px 0}
+.field label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:750;
+  margin:0 0 6px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.field input,.field textarea,.field select{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--text);
+  border-radius:14px;
+  padding:11px 12px;
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+  box-shadow:inset 0 1px 2px rgba(16,24,40,.04);
+}
+.field input:hover,.field textarea:hover,.field select:hover{border-color:#b9c6d8}
+.field input:focus,.field textarea:focus,.field select:focus{
+  outline:none;
+  border-color:var(--blue);
+  box-shadow:0 0 0 4px rgba(5,169,245,.12), inset 0 1px 2px rgba(16,24,40,.04);
+}
+.field textarea{min-height:72px;resize:vertical}
+.palette{display:grid;gap:11px}
+.block-template,.workout-block{
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,#fff,#f7fbff);
+  border-radius:17px;
+  padding:13px;
+  cursor:grab;
+  user-select:none;
+  box-shadow:var(--shadow-soft);
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,filter .18s ease;
+  position:relative;
+}
+.block-template:before,.workout-block:before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:14px;
+  bottom:14px;
+  width:5px;
+  border-radius:0 999px 999px 0;
+  background:linear-gradient(180deg,var(--orange),var(--blue));
+}
+.block-template:hover,.workout-block:hover{
+  transform:translateY(-3px) scale(1.01);
+  border-color:rgba(5,169,245,.46);
+  box-shadow:0 18px 34px rgba(16,24,40,.14);
+}
+.block-template:active,.workout-block:active{cursor:grabbing;transform:scale(.99)}
+.block-template strong,.workout-block strong{display:block;color:#182230;letter-spacing:-.01em}
+.block-template span,.workout-block span{color:var(--muted);font-size:12px;line-height:1.35}
+.timeline-wrap{min-height:520px}
+.dropzone{
+  min-height:250px;
+  border:1.5px dashed #b7c4d5;
+  border-radius:20px;
+  padding:13px;
+  background:linear-gradient(180deg,rgba(5,169,245,.06),rgba(252,103,25,.04));
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  overflow:auto;
+  transition:border-color .18s ease,background .18s ease,box-shadow .18s ease;
+}
+.dropzone:hover{border-color:var(--blue);box-shadow:inset 0 0 0 3px rgba(5,169,245,.08)}
+.empty{margin:auto;color:var(--muted);text-align:center;font-weight:700}
+.workout-block{
+  min-width:122px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  position:relative;
+  animation:blockPop .22s ease both;
+}
+.workout-block.selected{
+  outline:3px solid rgba(252,103,25,.28);
+  border-color:var(--orange);
+  box-shadow:0 18px 36px rgba(252,103,25,.20);
+}
+.workout-block .bar{
+  height:90px;
+  border-radius:13px;
+  margin-top:9px;
+  background:linear-gradient(180deg,rgba(5,169,245,.9),rgba(5,169,245,.16));
+  border:1px solid rgba(5,169,245,.22);
+  overflow:hidden;
+}
+.workout-block.warmup .bar{background:linear-gradient(180deg,rgba(45,211,111,.92),rgba(5,169,245,.18))}
+.workout-block.cooldown .bar{background:linear-gradient(180deg,rgba(5,169,245,.18),rgba(45,211,111,.9))}
+.workout-block.intervals .bar{background:repeating-linear-gradient(90deg,rgba(252,103,25,.92) 0 16px,rgba(5,169,245,.32) 16px 32px)}
+.workout-block.freeride .bar{background:linear-gradient(135deg,rgba(252,103,25,.8),rgba(24,213,200,.35))}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:12px 0}
+.stat{
+  background:linear-gradient(180deg,#fff,#f8fbff);
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:13px;
+  box-shadow:0 8px 18px rgba(16,24,40,.06);
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.stat:hover{transform:translateY(-2px);box-shadow:0 16px 28px rgba(5,169,245,.12)}
+.stat b{font-size:19px;color:#101828}
+.stat small{display:block;color:var(--muted);font-weight:700}
+pre{white-space:pre-wrap;word-break:break-word;background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:12px;max-height:250px;overflow:auto;color:#344054}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hint{color:var(--muted);font-size:13px;line-height:1.45}.mini{font-size:12px;color:var(--muted)}
+.previewBox{
+  margin:14px 0 12px;
+  background:linear-gradient(180deg,#ffffff,#f7fbff);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:11px;
+  overflow:hidden;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 10px 22px rgba(16,24,40,.06);
+}
+.previewBox svg{width:100%;height:250px;display:block}.axisText{font-size:11px;fill:#667085}.previewLine{fill:none;stroke:#fc6719;stroke-width:4;filter:drop-shadow(0 3px 6px rgba(252,103,25,.22))}.previewFill{fill:rgba(5,169,245,.14)}.gridLine{stroke:#e4e7ec;stroke-width:1}.wattsPill{display:inline-block;border:1px solid rgba(5,169,245,.24);background:rgba(5,169,245,.08);border-radius:999px;padding:7px 10px;margin-top:6px;color:#175cd3;font-size:12px;font-weight:750}.toolbarLine{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.toolbarLine .field{margin:0;min-width:135px;flex:1}.zoneTable{width:100%;border-collapse:separate;border-spacing:0;margin:10px 0 4px;font-size:12px;overflow:hidden;border-radius:15px;box-shadow:0 8px 18px rgba(16,24,40,.05)}.zoneTable th,.zoneTable td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 7px;text-align:left}.zoneTable th:first-child,.zoneTable td:first-child{border-left:1px solid var(--line)}.zoneTable tr:first-child th{border-top:1px solid var(--line)}.zoneTable th{color:#344054;font-weight:800;background:linear-gradient(180deg,#fff4ed,#f8fbff)}.zoneTable td{background:#fff}.zoneTable tr:hover td{background:#f0f9ff}.savedList{display:grid;gap:9px;margin-top:10px}.savedItem{display:flex;gap:8px;align-items:center;justify-content:space-between;border:1px solid var(--line);background:linear-gradient(180deg,#fff,#f8fbff);border-radius:15px;padding:10px;box-shadow:0 8px 18px rgba(16,24,40,.06);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}.savedItem:hover{transform:translateY(-2px);border-color:rgba(252,103,25,.36);box-shadow:0 16px 30px rgba(252,103,25,.12)}.savedItem span{font-size:12px;color:var(--muted);display:block}.savedItem strong{font-size:13px;color:#182230}.savedActions{display:flex;gap:6px}.savedActions button{padding:7px 9px;border-radius:10px;font-size:12px}.block-column{position:static}.block-template{min-height:76px}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blockPop{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:1100px){.app{grid-template-columns:1fr}.dropzone{min-height:240px}.stats{grid-template-columns:repeat(2,1fr)}header{position:static}.card{height:auto}}
+
+
+/* Veera visual refresh */
+:root{
+  --bg:#ffffff;
+  --page:#f8fafc;
+  --panel:#ffffff;
+  --panel2:#f8fafc;
+  --ink:#101827;
+  --text:#101827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --line-strong:#cbd5e1;
+  --primary:#7dd3fc;
+  --primary2:#bae6fd;
+  --accent:#a78bfa;
+  --accent2:#ddd6fe;
+  --blue:#7dd3fc;
+  --blue2:#e0f2fe;
+  --aqua:#bae6fd;
+  --green:#86efac;
+  --yellow:#fcd34d;
+  --danger:#fca5a5;
+  --shadow:0 18px 45px rgba(15,23,42,.08);
+  --shadow-soft:0 10px 25px rgba(125,211,252,.14);
+  --radius:22px;
+}
+body{
+  background:
+    radial-gradient(circle at 15% 0%, rgba(125,211,252,.18), transparent 30%),
+    radial-gradient(circle at 90% 8%, rgba(167,139,250,.18), transparent 32%),
+    linear-gradient(180deg,#ffffff,#f8fafc 60%,#ffffff);
+}
+body:before{display:none}
+header{
+  position:sticky;
+  top:0;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(229,231,235,.9);
+  box-shadow:0 8px 24px rgba(15,23,42,.05);
+  padding:16px 24px;
+}
+h1{
+  font-size:22px;
+  letter-spacing:-.045em;
+  color:var(--ink);
+}
+h1:before{
+  width:36px;height:36px;border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  box-shadow:0 10px 25px rgba(125,211,252,.24);
+}
+button{
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--ink);
+  border-radius:16px;
+  font-weight:900;
+  box-shadow:none;
+}
+button:hover{
+  border-color:rgba(125,211,252,.55);
+  box-shadow:0 12px 26px rgba(125,211,252,.16);
+}
+button.primary{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;
+  box-shadow:0 10px 25px rgba(125,211,252,.18);
+}
+button.primary:hover{box-shadow:0 16px 34px rgba(167,139,250,.20)}
+button.danger,.danger{color:#be123c}
+button.danger:hover{border-color:rgba(252,165,165,.55);box-shadow:0 12px 26px rgba(252,165,165,.14)}
+.app{
+  grid-template-columns:300px 260px minmax(420px,1fr) 360px;
+  gap:18px;
+  padding:24px;
+  max-width:1780px;
+}
+.card{
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(229,231,235,.9);
+  box-shadow:var(--shadow);
+}
+.card:before{display:none}
+.card h2{
+  font-size:16px;
+  color:var(--ink);
+  font-weight:950;
+  letter-spacing:-.035em;
+}
+.field label{
+  color:var(--muted);
+  font-weight:900;
+  font-size:11px;
+  letter-spacing:.07em;
+}
+.field input,.field textarea,.field select{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:14px;
+  box-shadow:none;
+}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 5px rgba(125,211,252,.18);
+}
+.block-template,.workout-block{
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:0 12px 28px rgba(15,23,42,.06);
+  border-radius:18px;
+}
+.block-template::before,.workout-block::before{
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+}
+.block-template:hover,.workout-block:hover{
+  border-color:rgba(125,211,252,.48);
+  box-shadow:0 18px 34px rgba(15,23,42,.09);
+}
+.workout-block.selected{
+  outline:3px solid rgba(167,139,250,.22);
+  border-color:var(--accent);
+  box-shadow:0 18px 36px rgba(167,139,250,.16);
+}
+.dropzone{
+  border:1.5px dashed rgba(125,211,252,.58);
+  background:linear-gradient(180deg,rgba(224,242,254,.44),rgba(221,214,254,.22));
+}
+.dropzone:hover{border-color:var(--accent);box-shadow:inset 0 0 0 3px rgba(167,139,250,.08)}
+.stat,.previewBox,.savedItem{
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:0 12px 28px rgba(15,23,42,.06);
+}
+.stat b{color:var(--ink)}
+.zoneTable th{background:linear-gradient(135deg,rgba(224,242,254,.8),rgba(221,214,254,.55));color:#334155}
+.previewLine{stroke:#7dd3fc;filter:drop-shadow(0 3px 6px rgba(125,211,252,.24))}
+.previewFill{fill:rgba(167,139,250,.12)}
+.wattsPill{border-color:rgba(125,211,252,.32);background:rgba(224,242,254,.52);color:#0369a1}
+.workout-block .bar{background:linear-gradient(180deg,rgba(125,211,252,.88),rgba(125,211,252,.16));border-color:rgba(125,211,252,.24)}
+.workout-block.warmup .bar{background:linear-gradient(180deg,rgba(134,239,172,.78),rgba(125,211,252,.18))}
+.workout-block.cooldown .bar{background:linear-gradient(180deg,rgba(125,211,252,.18),rgba(134,239,172,.72))}
+.workout-block.intervals .bar{background:repeating-linear-gradient(90deg,rgba(167,139,250,.82) 0 16px,rgba(125,211,252,.34) 16px 32px)}
+.workout-block.freeride .bar{background:linear-gradient(135deg,rgba(167,139,250,.70),rgba(125,211,252,.35))}
+.savedList{display:none}
+.builder-actions-card{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.builder-actions-card button{width:100%}
+</style>
+</head>
+<body>
+<header>
+  <h1>Veera Workout Builder</h1>
+  <div class="actions">
+    
+  </div>
+</header>
+<div class="app">
+  <aside class="card section">
+    <h2>Workout details</h2>
+    <div class="field"><label>Workout name</label><input id="wName" value="Custom Indoor Workout"></div>
+    <div class="field"><label>Your FTP watts</label><input id="ftp" type="number" min="1" value="250"></div>
+    <h2 style="margin-top:16px">Coggan power zones</h2>
+    <div id="zoneTableWrap"></div>
+    <p class="hint">Enter block targets in watts. The app calculates FTP % and exports Zwift-compatible power fractions into the ZWO.</p>
+  </aside>
+
+  <aside class="card section block-column">
+    <h2>Drag blocks</h2>
+    <div class="palette" id="palette">
+      <div class="block-template" draggable="true" data-type="warmup"><strong>Warmup ramp</strong><span>Minutes, start watts, end watts</span></div>
+      <div class="block-template" draggable="true" data-type="steady"><strong>Steady state</strong><span>Minutes and watts</span></div>
+      <div class="block-template" draggable="true" data-type="intervals"><strong>Intervals</strong><span>Repeats, on/off min/watts</span></div>
+      <div class="block-template" draggable="true" data-type="cooldown"><strong>Cooldown ramp</strong><span>Minutes, start watts, end watts</span></div>
+      <div class="block-template" draggable="true" data-type="freeride"><strong>Free ride</strong><span>Open effort segment</span></div>
+    </div>
+    <p class="mini" style="margin-top:12px">Click a block to add it, or drag it into the timeline.</p>
+  </aside>
+
+  <main class="card section timeline-wrap">
+    <h2>Workout timeline</h2>
+    <div class="stats"><div class="stat"><b id="statTime">0:00</b><small>Total time</small></div><div class="stat"><b id="statBlocks">0</b><small>Blocks</small></div><div class="stat"><b id="statAvg">0w</b><small>Approx avg watts</small></div><div class="stat"><b id="statTss">0</b><small>Rough TSS</small></div></div>
+    <div class="previewBox"><svg id="workoutPreview" viewBox="0 0 900 250" preserveAspectRatio="none" role="img" aria-label="Workout preview graph"></svg></div>
+    <div class="dropzone" id="timeline"><div class="empty">Drag blocks here to build your workout</div></div>
+    <p class="mini">Tip: drag blocks within the timeline to reorder. Click a block to edit it.</p>
+  </main>
+
+  <aside class="card section">
+    <h2>Selected block</h2>
+    <div id="editor"><p class="hint">Select a workout block to edit its duration and power targets.</p></div>
+    <h2 style="margin-top:18px">Workout actions</h2>
+    <div class="builder-actions-card"><button id="clearBtn" class="danger">Clear</button><button id="exportBtn" class="primary">Export .zwo</button></div>
+  </aside>
+</div>
+<script>
+const defaults={warmup:{type:'warmup',name:'Warmup',durationMin:10,powerLowW:125,powerHighW:188},steady:{type:'steady',name:'Steady',durationMin:20,powerW:188},intervals:{type:'intervals',name:'Intervals',repeat:5,onDurationMin:3,offDurationMin:2,onPowerW:263,offPowerW:138},cooldown:{type:'cooldown',name:'Cooldown',durationMin:8,powerLowW:188,powerHighW:113},freeride:{type:'freeride',name:'Free Ride',durationMin:5,powerW:163}};
+let blocks=[];let selected=null;let dragIndex=null;
+const STORAGE_KEY='zwoWorkoutBuilder.savedWorkouts.v1';
+const cogganZones=[
+  ['Z1','Active Recovery',0,55],['Z2','Endurance',56,75],['Z3','Tempo',76,90],['Z4','Lactate Threshold',91,105],['Z5','VO2 Max',106,120],['Z6','Anaerobic Capacity',121,150],['Z7','Neuromuscular Power',151,null]
+];
+const $=id=>document.getElementById(id); const esc=s=>String(s).replace(/[<>&"']/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[m]));
+function uid(){return 'id_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,10)}
+function ftp(){return Math.max(1,Number($('ftp').value)||1)}
+function minToSec(m){return Math.round((Number(m)||0)*60)}
+function secsToText(s){s=Number(s)||0;let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=Math.round(s%60);return h?`${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`:`${m}:${String(sec).padStart(2,'0')}`}
+function wToPct(w){return Math.round((Number(w)||0)/ftp()*100)}
+function zpowFromW(w){return ((Number(w)||0)/ftp()).toFixed(3).replace(/0+$/,'').replace(/\.$/,'')}
+function zoneWatts(low,high){const f=ftp(); if(low===0) return `≤ ${Math.floor(f*high/100)}w`; if(high===null) return `≥ ${Math.ceil(f*low/100)}w`; return `${Math.ceil(f*low/100)}–${Math.floor(f*high/100)}w`}
+function renderZones(){const rows=cogganZones.map(z=>`<tr><td><strong>${z[0]}</strong></td><td>${z[1]}</td><td>${zoneWatts(z[2],z[3])}</td></tr>`).join('');$('zoneTableWrap').innerHTML=`<table class="zoneTable"><thead><tr><th>Zone</th><th>Name</th><th>Watts</th></tr></thead><tbody>${rows}</tbody></table>`}
+function addBlock(type){blocks.push({...defaults[type],id:uid()});selected=blocks.length-1;render()}
+function blockDuration(b){return b.type==='intervals'?b.repeat*(minToSec(b.onDurationMin)+minToSec(b.offDurationMin)):minToSec(b.durationMin)}
+function blockAvgWatts(b){if(b.type==='intervals')return ((minToSec(b.onDurationMin)*b.onPowerW+minToSec(b.offDurationMin)*b.offPowerW)/(minToSec(b.onDurationMin)+minToSec(b.offDurationMin)||1)); if(b.type==='warmup'||b.type==='cooldown')return (Number(b.powerLowW)+Number(b.powerHighW))/2; return Number(b.powerW||0)}
+function render(){renderZones();const tl=$('timeline');tl.innerHTML=''; if(!blocks.length){tl.innerHTML='<div class="empty">Drag blocks here to build your workout</div>'}
+blocks.forEach((b,i)=>{const el=document.createElement('div');el.className=`workout-block ${b.type} ${selected===i?'selected':''}`;el.draggable=true;el.dataset.index=i;el.innerHTML=`<strong>${esc(b.name)}</strong><span>${label(b)}</span><div class="bar" style="height:${Math.max(46,Math.min(160,blockAvgWatts(b)/ftp()*125))}px"></div><span>${secsToText(blockDuration(b))}</span>`;el.onclick=()=>{selected=i;render()};el.addEventListener('dragstart',e=>{dragIndex=i;e.dataTransfer.setData('text/plain','move')});el.addEventListener('dragover',e=>e.preventDefault());el.addEventListener('drop',e=>{e.preventDefault();if(dragIndex===null||dragIndex===i)return;const [m]=blocks.splice(dragIndex,1);blocks.splice(i,0,m);selected=i;dragIndex=null;render()});tl.appendChild(el)}); renderStats();renderEditor();renderGraph();}
+function label(b){if(b.type==='intervals')return `${b.repeat}x ${b.onDurationMin}min @ ${b.onPowerW}w (${wToPct(b.onPowerW)}%) / ${b.offDurationMin}min @ ${b.offPowerW}w (${wToPct(b.offPowerW)}%)`; if(b.type==='warmup'||b.type==='cooldown')return `${b.powerLowW}w → ${b.powerHighW}w (${wToPct(b.powerLowW)}% → ${wToPct(b.powerHighW)}%)`; if(b.type==='freeride')return `Free ride ${b.powerW}w (${wToPct(b.powerW)}%)`; return `${b.powerW}w (${wToPct(b.powerW)}% FTP)`}
+function renderStats(){const total=blocks.reduce((a,b)=>a+blockDuration(b),0);const weighted=blocks.reduce((a,b)=>a+blockDuration(b)*blockAvgWatts(b),0);const avg=total?weighted/total:0;const ifactor=avg/ftp();const tss=Math.round(total/3600*Math.pow(ifactor,2)*100);$('statTime').textContent=secsToText(total);$('statBlocks').textContent=blocks.length;$('statAvg').textContent=Math.round(avg)+'w';$('statTss').textContent=tss}
+function renderEditor(){const ed=$('editor');if(selected===null||!blocks[selected]){ed.innerHTML='<p class="hint">Select a workout block to edit its duration and power targets.</p>';return} const b=blocks[selected];let html=`<div class="field"><label>Block name</label><input data-k="name" value="${esc(b.name)}"></div>`;
+if(b.type==='intervals'){html+=`<div class="row"><div class="field"><label>Repeats</label><input type="number" min="1" step="1" data-k="repeat" value="${b.repeat}"></div><div class="field"><label>On duration minutes</label><input type="number" min="0" step="0.25" data-k="onDurationMin" value="${b.onDurationMin}"></div></div><div class="row"><div class="field"><label>On watts</label><input type="number" min="0" step="1" data-k="onPowerW" value="${b.onPowerW}"></div><div class="field"><label>Off duration minutes</label><input type="number" min="0" step="0.25" data-k="offDurationMin" value="${b.offDurationMin}"></div></div><div class="field"><label>Off watts</label><input type="number" min="0" step="1" data-k="offPowerW" value="${b.offPowerW}"></div><span class="wattsPill">Exports: on ${zpowFromW(b.onPowerW)} FTP, off ${zpowFromW(b.offPowerW)} FTP</span>`}
+else{html+=`<div class="field"><label>Duration minutes</label><input type="number" min="0" step="0.25" data-k="durationMin" value="${b.durationMin}"></div>`; if(b.type==='warmup'||b.type==='cooldown') html+=`<div class="row"><div class="field"><label>Start watts</label><input type="number" min="0" step="1" data-k="powerLowW" value="${b.powerLowW}"></div><div class="field"><label>End watts</label><input type="number" min="0" step="1" data-k="powerHighW" value="${b.powerHighW}"></div></div><span class="wattsPill">Exports: ${zpowFromW(b.powerLowW)} → ${zpowFromW(b.powerHighW)} FTP</span>`; else html+=`<div class="field"><label>Watts</label><input type="number" min="0" step="1" data-k="powerW" value="${b.powerW}"></div><span class="wattsPill">Exports: ${zpowFromW(b.powerW)} FTP</span>`}
+html+=`<p class="mini">ZWO stores power as a fraction of FTP. Watts are converted using your FTP above.</p><button id="dupBtn">Duplicate</button> <button id="delBtn" class="danger">Delete</button>`; ed.innerHTML=html; ed.querySelectorAll('input').forEach(inp=>inp.oninput=()=>{const k=inp.dataset.k; b[k]=inp.type==='number'?Number(inp.value):inp.value;render()});$('delBtn').onclick=()=>{blocks.splice(selected,1);selected=null;render()};$('dupBtn').onclick=()=>{blocks.splice(selected+1,0,{...b,id:uid()});selected++;render()};}
+function workoutPoints(){let pts=[];let t=0;for(const b of blocks){if(b.type==='warmup'||b.type==='cooldown'){const d=blockDuration(b);pts.push([t,b.powerLowW]);t+=d;pts.push([t,b.powerHighW]);}else if(b.type==='intervals'){for(let r=0;r<b.repeat;r++){pts.push([t,b.onPowerW]);t+=minToSec(b.onDurationMin);pts.push([t,b.onPowerW]);pts.push([t,b.offPowerW]);t+=minToSec(b.offDurationMin);pts.push([t,b.offPowerW]);}}else{const d=blockDuration(b);pts.push([t,b.powerW]);t+=d;pts.push([t,b.powerW]);}}return pts}
+function renderGraph(){const svg=$('workoutPreview');const W=900,H=250,padL=44,padR=14,padT=14,padB=28;svg.innerHTML='';if(!blocks.length){svg.innerHTML=`<text x="450" y="125" text-anchor="middle" class="axisText">Live workout preview will appear here</text>`;return}const pts=workoutPoints();const total=Math.max(1,pts[pts.length-1][0]);const maxW=Math.max(ftp()*1.2,...pts.map(p=>p[1]))||ftp();const x=t=>padL+(t/total)*(W-padL-padR);const y=w=>H-padB-(w/maxW)*(H-padT-padB);for(let i=0;i<=4;i++){const yy=padT+i*(H-padT-padB)/4;svg.insertAdjacentHTML('beforeend',`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" class="gridLine"/>`)}for(let i=0;i<=4;i++){const val=Math.round(maxW*(1-i/4));const yy=padT+i*(H-padT-padB)/4;svg.insertAdjacentHTML('beforeend',`<text x="6" y="${yy+4}" class="axisText">${val}w</text>`)}let d=`M ${x(0)} ${H-padB} `+pts.map((p,i)=>`${i?'L':'L'} ${x(p[0])} ${y(p[1])}`).join(' ')+` L ${x(total)} ${H-padB} Z`;let line=pts.map((p,i)=>`${i?'L':'M'} ${x(p[0])} ${y(p[1])}`).join(' ');svg.insertAdjacentHTML('beforeend',`<path d="${d}" class="previewFill"/><path d="${line}" class="previewLine"/><line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" class="gridLine"/><text x="${padL}" y="${H-8}" class="axisText">0:00</text><text x="${W-padR-64}" y="${H-8}" class="axisText">${secsToText(total)}</text>`)}
+function buildZwo(){let body=blocks.map(b=>{if(b.type==='warmup')return `    <Warmup Duration="${minToSec(b.durationMin)}" PowerLow="${zpowFromW(b.powerLowW)}" PowerHigh="${zpowFromW(b.powerHighW)}"/>`;if(b.type==='cooldown')return `    <Cooldown Duration="${minToSec(b.durationMin)}" PowerLow="${zpowFromW(b.powerLowW)}" PowerHigh="${zpowFromW(b.powerHighW)}"/>`;if(b.type==='intervals')return `    <IntervalsT Repeat="${b.repeat}" OnDuration="${minToSec(b.onDurationMin)}" OffDuration="${minToSec(b.offDurationMin)}" OnPower="${zpowFromW(b.onPowerW)}" OffPower="${zpowFromW(b.offPowerW)}"/>`;if(b.type==='freeride')return `    <FreeRide Duration="${minToSec(b.durationMin)}" FlatRoad="1" Power="${zpowFromW(b.powerW)}"/>`;return `    <SteadyState Duration="${minToSec(b.durationMin)}" Power="${zpowFromW(b.powerW)}"/>`;}).join('\n');
+return `<?xml version="1.0" encoding="UTF-8"?>\n<workout_file>\n  <name>${esc($('wName').value)}</name>\n  <sportType>bike</sportType>\n  <workout>\n${body}\n  </workout>\n</workout_file>`}
+
+function exportFile(){const xml=buildZwo();const safe=($('wName').value||'workout').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')||'workout';const blob=new Blob([xml],{type:'application/xml'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=safe+'.zwo';a.click();URL.revokeObjectURL(a.href)}
+document.querySelectorAll('.block-template').forEach(el=>{el.addEventListener('dragstart',e=>e.dataTransfer.setData('type',el.dataset.type));el.addEventListener('click',()=>addBlock(el.dataset.type))});
+$('timeline').addEventListener('dragover',e=>e.preventDefault());$('timeline').addEventListener('drop',e=>{e.preventDefault();const type=e.dataTransfer.getData('type');if(type)addBlock(type)});
+['wName','ftp'].forEach(id=>$(id).addEventListener('input',render));$('exportBtn').onclick=exportFile;$('clearBtn').onclick=()=>{blocks=[];selected=null;render()};render();
+</script>
+</body>
+</html>
