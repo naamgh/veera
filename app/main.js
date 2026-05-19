@@ -883,11 +883,13 @@ function drawGraph(elapsed=0){
     const p2 = (b.high !== undefined ? b.high : b.power) * bias;
     const w1 = p1 * ftpVal;
     const w2 = p2 * ftpVal;
-    blocks.push({
-      start:t,
-      end:t + b.duration,
-      x1:xFor(t),
-      x2:xFor(t+b.duration),
+const visualShiftSec = 1;
+
+blocks.push({
+  start:t,
+  end:t + b.duration,
+  x1:xFor(Math.min(total, t + visualShiftSec)),
+  x2:xFor(Math.min(total, t + b.duration + visualShiftSec)),
       y1:yForWatts(w1),
       y2:yForWatts(w2),
       w1,w2,
