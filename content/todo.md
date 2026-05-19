@@ -1,5 +1,3 @@
-# To Do
-
 Stabilise current app
 - Complete workout timeline
 - Improve UX: workout library, setup menu
