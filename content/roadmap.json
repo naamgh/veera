@@ -7,7 +7,7 @@
       "items": [
         { "task": "Create GitHub repo", "done": true },
         { "task": "Host app on Cloudflare Pages", "done": true },
-        { "task": "Connect custom domain", "done": false },
+        { "task": "Connect custom domain", "done": true },
         { "task": "Create landing page", "done": true },
         { "task": "Create external Updates content", "done": true },
         { "task": "Create external roadmap checklist", "done": true }
@@ -17,7 +17,7 @@
       "title": "Trainer App",
       "description": "Make the main training experience stable and tester-ready.",
       "items": [
-        { "task": "Split Trainer App into separate files", "done": true },
+        { "task": "Modularise Trainer App", "done": true },
         { "task": "Clean redundant ride-mode code", "done": false },
         { "task": "Verify keyboard shortcuts", "done": true },
         { "task": "Reset session data when loading new workouts", "done": true },
@@ -31,7 +31,7 @@
       "items": [
         { "task": "Restyle builder to match Veera", "done": true },
         { "task": "Fix editable number inputs", "done": true },
-        { "task": "Add Coggan power zone labels", "done": true },
+        { "task": "Add Coggan power zone guide", "done": true },
         { "task": "End interval blocks after final ON set", "done": true },
         { "task": "Integrate builder into workout library", "done": false }
       ]
@@ -45,6 +45,7 @@
         { "task": "Create user account section", "done": false },
         { "task": "Save user info to cloud database", "done": false },
         { "task": "Save created workouts to cloud database", "done": false }
+        { "task": "Implement Strava API", "done": false }
       ]
     },
     {
