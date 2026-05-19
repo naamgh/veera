@@ -44,7 +44,7 @@
         { "task": "Add sign in for testers", "done": false },
         { "task": "Create user account section", "done": false },
         { "task": "Save user info to cloud database", "done": false },
-        { "task": "Save created workouts to cloud database", "done": false }
+        { "task": "Save created workouts to cloud database", "done": false },
         { "task": "Implement Strava API", "done": false }
       ]
     },
