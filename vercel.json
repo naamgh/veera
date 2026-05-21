@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/strava",
+      "destination": "https://strava-nu.vercel.app"
+    },
+    {
+      "source": "/strava/:path*",
+      "destination": "https://strava-nu.vercel.app/:path*"
+    }
+  ]
+}
