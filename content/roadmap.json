@@ -22,8 +22,8 @@
         { "task": "Verify keyboard shortcuts", "done": true },
         { "task": "Reset session data when loading new workouts", "done": true },
         { "task": "Polish workout timeline and HUD", "done": false },
-        { "task": "Improve workout completion summary", "done": false }
-        { "task": "Fix intensity %", "done": false }
+        { "task": "Improve workout completion summary", "done": false },
+        { "task": "Fix intensity %", "done": false },
         { "task": "Improve small mode (small view port)", "done": false }
       ]
     },
@@ -35,7 +35,7 @@
         { "task": "Fix editable number inputs", "done": true },
         { "task": "Add Coggan power zone guide", "done": true },
         { "task": "End interval blocks after final ON set", "done": true },
-        { "task": "Integrate builder into workout library", "done": false }
+        { "task": "Integrate builder into workout library", "done": false },
         { "task": "Functionality to "preview" a workout", "done": false }
       ]
     },
