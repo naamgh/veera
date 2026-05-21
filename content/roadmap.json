@@ -36,7 +36,7 @@
         { "task": "Add Coggan power zone guide", "done": true },
         { "task": "End interval blocks after final ON set", "done": true },
         { "task": "Integrate builder into workout library", "done": false },
-        { "task": "Functionality to "preview" a workout", "done": false }
+        { "task": "Functionality to preview a workout", "done": false }
       ]
     },
     {
