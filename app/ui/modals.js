@@ -1,0 +1,95 @@
+// Modal shell required before main.js binds event listeners.
+(function(){
+  const saved = document.getElementById('savedWorkoutsModal');
+  if(saved && !document.getElementById('closeSavedWorkoutsBtn')){
+    saved.innerHTML = `
+      <div class="saved-workouts-head">
+        <div><strong>Workouts</strong><span>Browse, filter, tag and load your training sessions</span></div>
+        <button id="closeSavedWorkoutsBtn" class="ghost icon-btn" type="button">×</button>
+      </div>
+      <div class="saved-workouts-content">
+        <aside class="library-sidebar">
+          <div class="library-section-title">Filters</div>
+          <div id="libraryCategoryChips" class="filter-chip-group"></div>
+          <div class="library-section-title">Labels</div>
+          <div id="libraryLabelChips" class="filter-chip-group"></div>
+          <div class="library-section-title">Import</div>
+          <div class="library-save-box">
+            <button id="importSaveZwoBtn" class="secondary import-save-btn" type="button">Import &amp; Save ZWO</button>
+            <input id="importSaveZwoInput" type="file" accept=".zwo,.xml" style="display:none;">
+            <div id="importSaveStatus">Choose a .zwo file to import it and save it straight into this library.</div>
+            <div class="library-save-divider">or</div>
+            <label for="libraryCategory">Category</label>
+            <input id="libraryCategory" type="text" list="libraryCategoryOptions" placeholder="e.g. Threshold">
+            <datalist id="libraryCategoryOptions"></datalist>
+            <label for="libraryLabels">Labels</label>
+            <input id="libraryLabels" type="text" placeholder="e.g. short, hard, climbing">
+            <button id="saveWorkoutBtn" class="secondary" disabled>Save Loaded Workout</button>
+          </div>
+        </aside>
+        <section class="library-main">
+          <div class="library-toolbar">
+            <input id="librarySearch" type="text" placeholder="Search workouts, categories or labels">
+            <select id="librarySort">
+              <option value="recent">Recently added</option>
+              <option value="name">A–Z</option>
+              <option value="duration_short">Duration: short to long</option>
+              <option value="duration_long">Duration: long to short</option>
+              <option value="category">Category</option>
+              <option value="favourite">Favourites first</option>
+            </select>
+            <select id="libraryCategoryFilter" style="display:none"><option value="">All categories</option></select>
+          </div>
+          <div id="savedWorkoutList" class="saved-workout-list"></div>
+        </section>
+      </div>`;
+  }
+
+  const end = document.getElementById('workoutEndModal');
+  if(end && !document.getElementById('closeWorkoutEndBtn')){
+    end.innerHTML = `
+      <div class="workout-end-head">
+        <div><strong id="workoutEndTitle">Workout Complete</strong><span id="workoutEndSubtitle">Ride summary</span></div>
+        <button id="closeWorkoutEndBtn" class="ghost icon-btn" type="button">×</button>
+      </div>
+      <div class="workout-end-content">
+        <div class="workout-end-shot"><img id="workoutEndTimelineImg" alt="Workout share image preview"></div>
+        <div class="workout-end-grid">
+          <div class="summary-stat"><span>Duration</span><strong id="summaryDuration">0:00</strong></div>
+          <div class="summary-stat"><span>Avg Power</span><strong id="summaryAvgPower">--</strong></div>
+          <div class="summary-stat"><span>Max Power</span><strong id="summaryMaxPower">--</strong></div>
+          <div class="summary-stat"><span>Avg HR</span><strong id="summaryAvgHr">--</strong></div>
+          <div class="summary-stat"><span>Max HR</span><strong id="summaryMaxHr">--</strong></div>
+          <div class="summary-stat"><span>TSS</span><strong id="summaryTss">0</strong></div>
+          <div class="summary-stat"><span>Compliance</span><strong id="summaryCompliance">--</strong></div>
+          <div class="summary-stat"><span>Samples</span><strong id="summarySamples">0</strong></div>
+        </div>
+        <label for="rideNotes">Ride notes</label>
+        <textarea id="rideNotes" placeholder="How did this feel?" rows="3"></textarea>
+        <div class="workout-end-actions">
+          <button id="logWorkoutBtn" type="button">Log Workout</button>
+          <button id="uploadStravaBtn" class="secondary" type="button">Upload to Strava</button>
+          <button id="modalExportTcxBtn" class="ghost" type="button">Export TCX</button>
+          <button id="saveSummaryScreenshotBtn" class="green" type="button">Save Share Image</button>
+          <button id="discardWorkoutBtn" class="danger" type="button">Discard Workout</button>
+        </div>
+        <div id="ftpEndActions" class="ftp-end-actions">
+          <button id="updateFtpBtn" class="green" type="button">Update FTP</button>
+          <button id="keepFtpBtn" class="ghost" type="button">Keep Current FTP</button>
+        </div>
+      </div>`;
+  }
+
+  const stop = document.getElementById('stopConfirmModal');
+  if(stop && !document.getElementById('confirmStopYesBtn')){
+    stop.innerHTML = `
+      <div class="stop-confirm-content">
+        <strong>Are you sure you want to stop?</strong>
+        <p>Yes will end this session and open the workout summary. No will return you to Ready state.</p>
+        <div class="stop-confirm-actions">
+          <button id="confirmStopYesBtn" class="danger" type="button">Yes, Stop Workout</button>
+          <button id="confirmStopNoBtn" class="ghost" type="button">No, Back to Ready</button>
+        </div>
+      </div>`;
+  }
+})();
