@@ -53,9 +53,49 @@
   </div>
 </div>
 <div id="workoutEndOverlay" class="settings-overlay"></div>
-<div id="workoutEndModal" class="workout-end-modal"></div>
+<div id="workoutEndModal" class="workout-end-modal">
+  <div class="workout-end-head">
+    <div><strong id="workoutEndTitle">Workout Complete</strong><span id="workoutEndSubtitle">Ride summary</span></div>
+    <button id="closeWorkoutEndBtn" class="ghost icon-btn" type="button">×</button>
+  </div>
+  <div class="workout-end-content">
+    <div class="workout-end-shot"><img id="workoutEndTimelineImg" alt="Workout share image preview"></div>
+    <div class="workout-end-grid">
+      <div class="summary-stat"><span>Duration</span><strong id="summaryDuration">0:00</strong></div>
+      <div class="summary-stat"><span>Avg Power</span><strong id="summaryAvgPower">--</strong></div>
+      <div class="summary-stat"><span>Max Power</span><strong id="summaryMaxPower">--</strong></div>
+      <div class="summary-stat"><span>Avg HR</span><strong id="summaryAvgHr">--</strong></div>
+      <div class="summary-stat"><span>Max HR</span><strong id="summaryMaxHr">--</strong></div>
+      <div class="summary-stat"><span>TSS</span><strong id="summaryTss">0</strong></div>
+      <div class="summary-stat"><span>Compliance</span><strong id="summaryCompliance">--</strong></div>
+      <div class="summary-stat"><span>Samples</span><strong id="summarySamples">0</strong></div>
+    </div>
+    <label for="rideNotes">Ride notes</label>
+    <textarea id="rideNotes" placeholder="How did this feel?" rows="3"></textarea>
+    <div class="workout-end-actions">
+      <button id="logWorkoutBtn" type="button">Log Workout</button>
+      <button id="uploadStravaBtn" class="secondary" type="button">Upload to Strava</button>
+      <button id="modalExportTcxBtn" class="ghost" type="button">Export TCX</button>
+      <button id="saveSummaryScreenshotBtn" class="green" type="button">Save Share Image</button>
+      <button id="discardWorkoutBtn" class="danger" type="button">Discard Workout</button>
+    </div>
+    <div id="ftpEndActions" class="ftp-end-actions">
+      <button id="updateFtpBtn" class="green" type="button">Update FTP</button>
+      <button id="keepFtpBtn" class="ghost" type="button">Keep Current FTP</button>
+    </div>
+  </div>
+</div>
 <div id="stopConfirmOverlay" class="settings-overlay"></div>
-<div id="stopConfirmModal" class="stop-confirm-modal"></div>
+<div id="stopConfirmModal" class="stop-confirm-modal">
+  <div class="stop-confirm-content">
+    <strong>Are you sure you want to stop?</strong>
+    <p>Yes will end this session and open the workout summary. No will return you to Ready state.</p>
+    <div class="stop-confirm-actions">
+      <button id="confirmStopYesBtn" class="danger" type="button">Yes, Stop Workout</button>
+      <button id="confirmStopNoBtn" class="ghost" type="button">No, Back to Ready</button>
+    </div>
+  </div>
+</div>
 <div style="display:none" aria-hidden="true">
   <span id="targetPower"></span><span id="intervalText"></span><span id="currentName"></span><span id="remainingText"></span><span id="nextName"></span><span id="feedbackTitle"></span><span id="feedbackText"></span>
 </div>
