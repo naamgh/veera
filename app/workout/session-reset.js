@@ -4,6 +4,9 @@
   if(window.__veeraSessionResetPatched) return;
   window.__veeraSessionResetPatched = true;
 
+  let resetDepth = 0;
+  let lastResetAt = 0;
+
   function setText(id, value){
     const el = document.getElementById(id);
     if(el) el.textContent = value;
@@ -14,16 +17,18 @@
     if(el) el.style.width = value;
   }
 
-  function clearTimer(timerName){
-    try{
-      if(typeof window[timerName] !== 'undefined' && window[timerName]){
-        clearInterval(window[timerName]);
-        window[timerName] = null;
-      }
-    }catch(e){}
+  function closeModal(id){
+    const el = document.getElementById(id);
+    if(el) el.classList.remove('open');
   }
 
   function resetWorkoutSessionState(){
+    const now = Date.now();
+
+    // Prevent duplicate resets when one loader calls another internally.
+    if(resetDepth > 0 || now - lastResetAt < 120) return;
+    lastResetAt = now;
+
     try{
       // Timers / playback state.
       if(typeof playing !== 'undefined') playing = false;
@@ -31,6 +36,7 @@
       if(typeof workoutPaused !== 'undefined') workoutPaused = false;
       if(typeof workoutCompleted !== 'undefined') workoutCompleted = false;
       if(typeof workoutEndReason !== 'undefined') workoutEndReason = 'completed';
+      if(typeof stopConfirmOpen !== 'undefined') stopConfirmOpen = false;
       if(typeof elapsedBeforePause !== 'undefined') elapsedBeforePause = 0;
       if(typeof startedAt !== 'undefined') startedAt = 0;
       if(typeof readyNeedsFreshPedal !== 'undefined') readyNeedsFreshPedal = false;
@@ -60,7 +66,7 @@
       try{ if(typeof autoStartMonitor !== 'undefined'){ clearInterval(autoStartMonitor); autoStartMonitor = null; } }catch(e){}
       try{ if(typeof recordInterval !== 'undefined'){ clearInterval(recordInterval); recordInterval = null; } }catch(e){}
 
-      // Reset visible session UI.
+      // Reset visible session UI only. Do not clear loadedName/workout here; the loader owns that.
       setWidth('progress', '0%');
       setText('elapsedText', '0:00');
       setText('totalText', '0:00');
@@ -74,14 +80,10 @@
       setText('avgHrMetric', 'Avg -- bpm');
       setText('tssMetric', 'TSS 0');
 
-      const endOverlay = document.getElementById('workoutEndOverlay');
-      const endModal = document.getElementById('workoutEndModal');
-      const stopOverlay = document.getElementById('stopConfirmOverlay');
-      const stopModal = document.getElementById('stopConfirmModal');
-      if(endOverlay) endOverlay.classList.remove('open');
-      if(endModal) endModal.classList.remove('open');
-      if(stopOverlay) stopOverlay.classList.remove('open');
-      if(stopModal) stopModal.classList.remove('open');
+      closeModal('workoutEndOverlay');
+      closeModal('workoutEndModal');
+      closeModal('stopConfirmOverlay');
+      closeModal('stopConfirmModal');
 
       if(typeof updateRecordingUi === 'function') updateRecordingUi();
       if(typeof updateReadyUi === 'function') updateReadyUi();
@@ -98,15 +100,23 @@
   function wrapLoader(name){
     const original = window[name];
     if(typeof original !== 'function' || original.__veeraResetWrapped) return;
+
     const wrapped = function(){
-      resetWorkoutSessionState();
-      return original.apply(this, arguments);
+      if(resetDepth === 0) resetWorkoutSessionState();
+      resetDepth++;
+      try{
+        return original.apply(this, arguments);
+      }finally{
+        resetDepth = Math.max(0, resetDepth - 1);
+      }
     };
+
     wrapped.__veeraResetWrapped = true;
+    wrapped.__veeraOriginal = original;
     window[name] = wrapped;
   }
 
-  // These are the active workout-loading entry points in main.js.
+  // Active workout-loading entry points in main.js.
   wrapLoader('parseZwo');
   wrapLoader('loadSavedWorkout');
   wrapLoader('loadBuiltInFtpRampTest');
