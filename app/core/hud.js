@@ -31,7 +31,7 @@
     style.id = 'veeraHudStyles';
     style.textContent = `
       .timeline-hud-panel{
-        padding:10px 12px !important;
+        padding:8px 10px !important;
       }
       .hud-inline-layout{
         display:grid;
@@ -43,9 +43,9 @@
       .hud-inline-item{
         width:100% !important;
         min-width:0;
-        min-height:74px;
+        min-height:58px;
         margin:0 !important;
-        padding:10px 12px !important;
+        padding:6px 10px !important;
         border-radius:18px !important;
         display:flex !important;
         flex-direction:column;
@@ -133,8 +133,8 @@
           gap:6px;
         }
         .hud-inline-item{
-          min-height:62px;
-          padding:8px 6px !important;
+          min-height:58px;
+          padding:6px 6px !important;
           border-radius:14px !important;
         }
         .hud-inline-label{font-size:8px;letter-spacing:.08em;}
