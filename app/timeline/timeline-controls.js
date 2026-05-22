@@ -1,6 +1,52 @@
 // Timeline controls module.
-// Ensures the intensity slider, skip and extend controls are visible after main.js initialises.
+// Owns the intensity slider, skip interval and interval extension control dock.
+// Loaded before main.js so it can block older duplicate docking scripts.
 (function(){
+  if(window.__veeraTimelineControlsLoaded) return;
+  window.__veeraTimelineControlsLoaded = true;
+
+  const originalDocumentAddEventListener = Document.prototype.addEventListener;
+  const originalWindowAddEventListener = Window.prototype.addEventListener;
+  const originalSetTimeout = window.setTimeout;
+
+  function looksLikeLegacyTimelineDocker(fn){
+    if(typeof fn !== 'function') return false;
+    const source = Function.prototype.toString.call(fn);
+    return source.includes('timeline-control-dock') &&
+      (
+        source.includes('dockTimelineControls') ||
+        source.includes('dockAllIntervalControls') ||
+        source.includes('dockExactIntervalControls') ||
+        source.includes('rebuildIntervalControlBar') ||
+        source.includes('intensityMinusBtn') ||
+        source.includes('intensityChip')
+      );
+  }
+
+  Document.prototype.addEventListener = function(type, listener, options){
+    if(this === document && (type === 'DOMContentLoaded' || type === 'keydown') && looksLikeLegacyTimelineDocker(listener)){
+      console.info('Veera: blocked duplicate legacy timeline controls listener.');
+      return;
+    }
+    return originalDocumentAddEventListener.call(this, type, listener, options);
+  };
+
+  Window.prototype.addEventListener = function(type, listener, options){
+    if(this === window && type === 'resize' && looksLikeLegacyTimelineDocker(listener)){
+      console.info('Veera: blocked duplicate legacy timeline resize listener.');
+      return;
+    }
+    return originalWindowAddEventListener.call(this, type, listener, options);
+  };
+
+  window.setTimeout = function(handler, timeout){
+    if(looksLikeLegacyTimelineDocker(handler)){
+      console.info('Veera: blocked duplicate legacy timeline timeout.');
+      return 0;
+    }
+    return originalSetTimeout.apply(this, arguments);
+  };
+
   function injectStyles(){
     if(document.getElementById('veeraTimelineControlsModuleStyles')) return;
     const style = document.createElement('style');
@@ -52,8 +98,26 @@
         background:rgba(255,255,255,.12);
         color:#f8fafc;
       }
+      #intervalEditControls{
+        display:none !important;
+      }
     `;
     document.head.appendChild(style);
+  }
+
+  function syncIntensityDisplay(){
+    const slider = document.getElementById('intensitySlider');
+    const value = document.getElementById('intensityValue');
+    if(!slider || !value) return;
+    value.textContent = `${Math.round(Number(slider.value || 100))}%`;
+  }
+
+  function bindIntensitySync(){
+    const slider = document.getElementById('intensitySlider');
+    if(!slider || slider.dataset.veeraTimelineControlBound) return;
+    slider.addEventListener('input', syncIntensityDisplay);
+    slider.addEventListener('change', syncIntensityDisplay);
+    slider.dataset.veeraTimelineControlBound = 'true';
   }
 
   function restoreTimelineControls(){
@@ -67,7 +131,7 @@
       dock.className = 'timeline-control-dock';
     }
 
-    [
+    const ids = [
       'intensitySlider',
       'intensityValue',
       'intensityDownBtn',
@@ -76,7 +140,9 @@
       'extendInterval1Btn',
       'extendInterval25Btn',
       'extendInterval5Btn'
-    ].forEach(id=>{
+    ];
+
+    ids.forEach(id=>{
       const el = document.getElementById(id);
       if(!el) return;
       el.style.display = '';
@@ -91,15 +157,14 @@
     dock.style.opacity = '1';
     timeline.insertBefore(dock, hud);
 
-    const oldControls = document.getElementById('intervalEditControls');
-    if(oldControls && oldControls !== dock) oldControls.style.display = 'none';
+    bindIntensitySync();
+    syncIntensityDisplay();
   }
 
   injectStyles();
-  document.addEventListener('DOMContentLoaded', restoreTimelineControls);
-  setTimeout(restoreTimelineControls, 50);
-  setTimeout(restoreTimelineControls, 250);
-  setTimeout(restoreTimelineControls, 800);
-  setTimeout(restoreTimelineControls, 1600);
-  window.addEventListener('resize', restoreTimelineControls, {passive:true});
+  originalDocumentAddEventListener.call(document, 'DOMContentLoaded', restoreTimelineControls);
+  originalWindowAddEventListener.call(window, 'resize', restoreTimelineControls, {passive:true});
+  originalSetTimeout(restoreTimelineControls, 50);
+  originalSetTimeout(restoreTimelineControls, 250);
+  originalSetTimeout(restoreTimelineControls, 800);
 })();
