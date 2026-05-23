@@ -3,20 +3,6 @@
   const app = document.querySelector('main.app');
   if(!app || app.children.length) return;
 
-  const style = document.createElement('style');
-  style.textContent = `
-    .compact-command-strip{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:10px 12px;margin-top:8px;border-radius:18px;background:rgba(255,255,255,.04);backdrop-filter:blur(10px)}
-    .command-group{display:flex;align-items:center;gap:8px}
-    .command-divider{width:1px;height:28px;background:rgba(148,163,184,.18);flex:0 0 auto}
-    .compact-pill-btn,.compact-intensity-chip{height:38px;min-height:38px;padding:0 14px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;line-height:1}
-    .compact-pill-btn{border:1px solid rgba(148,163,184,.2);background:rgba(255,255,255,.06);color:inherit;cursor:pointer}
-    .compact-pill-btn:disabled{opacity:.45}
-    .compact-intensity-chip{min-width:72px;background:rgba(255,255,255,.08)}
-    .ride-command-group .compact-pill-btn{min-width:42px;padding:0;font-size:16px;opacity:1 !important;visibility:visible !important;display:inline-flex !important}
-    .ride-controls-column,.ride-action-stack,#readyBanner{display:none !important}
-  `;
-  document.head.appendChild(style);
-
   app.innerHTML = `
   <section class="panel">
     <div class="setup-header">
@@ -34,12 +20,15 @@
         <span><i class="key-icon wide">SPC</i> Pause</span>
         <span><i class="key-icon">↑</i> + intensity</span>
         <span><i class="key-icon">↓</i> − intensity</span>
+        <span><i class="key-icon">←</i> Hide Menu</span>
+        <span><i class="key-icon">→</i> Show Menu</span>
       </div>
     </div>
 
     <div class="card">
       <label for="ftpInput">FTP</label>
       <input id="ftpInput" type="number" value="250" min="50" max="600">
+      <p class="small">Used to convert ZWO % FTP targets into watts.</p>
     </div>
 
     <div class="card">
@@ -53,9 +42,6 @@
 
     <div class="card workout-library-card">
       <button id="openSavedWorkoutsBtn" class="secondary" type="button">Workouts</button>
-      <button id="importSaveZwoBtn" class="secondary import-save-btn" type="button">Import & Save ZWO</button>
-      <input id="importSaveZwoInput" type="file" accept=".zwo,.xml" style="display:none;">
-      <div id="importSaveStatus" style="display:none"></div>
     </div>
 
     <div style="display:none" aria-hidden="true">
@@ -64,11 +50,9 @@
       <span id="ergStatus"></span>
       <button id="ergOffBtn" type="button"></button>
     </div>
-
     <div id="ftmsLog" class="log" style="display:none">Debug log hidden</div>
 
     <input id="zwoInput" type="file" accept=".zwo,.xml" style="display:none;">
-
     <div style="display:none" aria-hidden="true">
       <span id="zwoDot" class="dot"></span>
       <span id="zwoStatus">No workout loaded</span>
@@ -79,48 +63,76 @@
 
   <section class="main">
     <span id="speedVal" class="metric-number" style="display:none">--</span>
-
     <div class="player">
       <div class="timeline">
         <button id="rideModeBtn" type="button" style="display:none" disabled></button>
         <span id="elapsedText" style="display:none">0:00</span>
         <span id="totalText" style="display:none">0:00</span>
         <span id="currentBlockDetailText" style="display:none">--</span>
-
         <canvas id="graph" width="1200" height="420"></canvas>
 
-        <div class="interval-edit-controls compact-command-strip" id="intervalEditControls" aria-label="Workout command strip">
-          <div class="command-group intensity-command-group">
-            <button id="intensityDownBtn" class="compact-pill-btn" type="button">−</button>
-            <strong id="intensityValue" class="compact-intensity-chip">100%</strong>
-            <button id="intensityUpBtn" class="compact-pill-btn" type="button">+</button>
+        <div class="interval-edit-controls" id="intervalEditControls" aria-label="Interval controls">
+          <div class="inline-intensity-control" aria-label="Intensity control">
+            <label for="intensitySlider">Intensity</label>
+            <input id="intensitySlider" type="range" min="50" max="150" value="100">
+            <strong id="intensityValue" class="intensity-chip">100%</strong>
+            <button id="intensityDownBtn" class="ghost icon-btn inline-intensity-btn" type="button" aria-label="Decrease intensity">−</button>
+            <button id="intensityUpBtn" class="ghost icon-btn inline-intensity-btn" type="button" aria-label="Increase intensity">+</button>
           </div>
-
-          <span class="command-divider"></span>
-
-          <div class="command-group">
-            <button id="skipIntervalBtn" class="compact-pill-btn" type="button">Skip Interval</button>
-          </div>
-
-          <span class="command-divider"></span>
-
-          <div class="command-group">
-            <button id="extendInterval1Btn" class="compact-pill-btn" type="button">+1 min</button>
-            <button id="extendInterval5Btn" class="compact-pill-btn" type="button">+5 min</button>
-          </div>
-
-          <span class="command-divider"></span>
-
-          <div class="command-group ride-command-group">
-            <button id="startBtn" class="compact-pill-btn" type="button">▶</button>
-            <button id="pauseBtn" class="compact-pill-btn" type="button">❚❚</button>
-            <button id="resetBtn" class="compact-pill-btn" type="button">■</button>
-          </div>
+          <span class="interval-edit-divider inline-intensity-divider" aria-hidden="true"></span>
+          <button id="skipIntervalBtn" class="ghost interval-edit-btn" type="button" disabled>Skip interval</button>
+          <span class="interval-edit-divider" aria-hidden="true"></span>
+          <button id="extendInterval1Btn" class="ghost interval-edit-btn" type="button" disabled>+1:00</button>
+          <button id="extendInterval25Btn" class="ghost interval-edit-btn" type="button" disabled>+2:30</button>
+          <button id="extendInterval5Btn" class="ghost interval-edit-btn" type="button" disabled>+5:00</button>
         </div>
 
         <div id="timelineOverlay" class="timeline-overlay" style="display:none"></div>
         <section class="timeline-hud-panel" aria-label="Live workout HUD"></section>
       </div>
+
+      <aside class="ride-controls-column">
+        <div class="ride-block-card" aria-live="polite">
+          <div id="currentBlockPanel" class="current-block-panel zone-recovery">
+            <span class="block-card-label">Current block</span>
+            <span id="currentBlockGlance" class="block-card-value">--</span>
+            <span id="currentBlockGlanceMeta" class="block-card-meta">Load a workout</span>
+          </div>
+          <div id="liveFtpPanel" class="ftp-live-panel" style="display:none">
+            <span class="block-card-label">Live FTP</span>
+            <span id="liveFtpValue" class="block-card-value">--</span>
+            <span id="liveFtpMeta" class="block-card-meta">Current FTP --</span>
+          </div>
+          <div class="next-block-panel">
+            <span class="block-card-label">Next block</span>
+            <span id="nextBlockGlance" class="block-card-value">--</span>
+            <span id="nextBlockGlanceMeta" class="block-card-meta">--</span>
+          </div>
+          <div id="blocksRemainingText" class="blocks-remaining">0 blocks remaining</div>
+        </div>
+
+        <div class="main-screen-progress progress-wrap"><div id="progress" class="progress"></div></div>
+
+        <div class="ride-action-stack" id="rideActionStack" data-ride-state="idle">
+          <div class="ride-controls-label">Ride Controls</div>
+          <div class="controls ride-controls-strip" aria-label="Ride Controls">
+            <button id="startBtn" class="ride-control-btn ride-control-ready" disabled>Ready</button>
+            <button class="ride-control-btn ride-control-pause" id="pauseBtn" disabled>Pause</button>
+            <button class="ride-control-btn ride-control-stop" id="resetBtn" disabled>Stop Workout</button>
+          </div>
+          <div id="readyBanner" class="ready-banner">Load a workout, press Ready, then pedal.</div>
+        </div>
+
+        <div class="mini-controls"></div>
+
+        <div class="recording-panel main-screen-exports" aria-hidden="true">
+          <span id="recordDot" class="rec-dot" style="display:none"></span>
+          <div class="export-only">
+            <button class="green" id="exportTcxBtn" disabled>Export TCX</button>
+            <button class="ghost" id="exportTimelinePngBtn" disabled>Export Timeline PNG</button>
+          </div>
+        </div>
+      </aside>
 
       <div class="record-grid">
         <strong id="recordSamples" style="display:none">0</strong>
