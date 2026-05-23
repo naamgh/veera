@@ -32,9 +32,9 @@
     const style = document.createElement('style');
     style.id = 'veeraHudStyles';
     style.textContent = `
-      .timeline-hud-panel{padding:8px 10px !important;}
+      .timeline-hud-panel{padding:4px 8px !important;}
       .hud-inline-layout{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;align-items:center;width:100%;}
-      .hud-inline-item{position:relative;width:100% !important;min-width:0;min-height:58px;margin:0 !important;padding:6px 10px !important;border-radius:0 !important;display:flex !important;flex-direction:column;align-items:center !important;justify-content:center !important;gap:4px;text-align:center !important;}
+      .hud-inline-item{position:relative;width:100% !important;min-width:0;min-height:46px;margin:0 !important;padding:6px 10px !important;border-radius:0 !important;display:flex !important;flex-direction:column;align-items:center !important;justify-content:center !important;gap:4px;text-align:center !important;}
       .hud-inline-item:not(:first-child)::before{content:"";position:absolute;left:0;top:13px;bottom:13px;width:1px;background:rgba(148,163,184,.22);}
       body.dark .hud-inline-item:not(:first-child)::before{background:rgba(203,213,225,.14);}
       .hud-inline-item .metric-icon{display:none !important;}
