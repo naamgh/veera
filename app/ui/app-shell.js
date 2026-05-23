@@ -3,6 +3,70 @@
   const app = document.querySelector('main.app');
   if(!app || app.children.length) return;
 
+  const style = document.createElement('style');
+  style.textContent = `
+    .compact-command-strip{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      padding:10px 12px;
+      margin-top:8px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      backdrop-filter:blur(10px);
+    }
+    .command-group{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .command-divider{
+      width:1px;
+      height:28px;
+      background:rgba(148,163,184,.18);
+      flex:0 0 auto;
+    }
+    .compact-pill-btn,
+    .compact-intensity-chip{
+      height:38px;
+      min-height:38px;
+      padding:0 14px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:14px;
+      line-height:1;
+    }
+    .compact-pill-btn{
+      border:1px solid rgba(148,163,184,.2);
+      background:rgba(255,255,255,.06);
+      color:inherit;
+      cursor:pointer;
+    }
+    .compact-pill-btn:disabled{
+      opacity:.45;
+    }
+    .compact-intensity-chip{
+      min-width:72px;
+      background:rgba(255,255,255,.08);
+    }
+    .ride-command-group .compact-pill-btn{
+      min-width:38px;
+      padding:0;
+      font-size:16px;
+    }
+    .ride-controls-column,
+    .ride-action-stack,
+    #readyBanner{
+      display:none !important;
+    }
+  `;
+  document.head.appendChild(style);
+
   app.innerHTML = `
   <section class="panel">
     <div class="setup-header">
@@ -74,7 +138,7 @@
         <div class="interval-edit-controls compact-command-strip" id="intervalEditControls" aria-label="Workout command strip">
           <div class="command-group intensity-command-group" aria-label="Intensity control">
             <button id="intensityDownBtn" class="ghost compact-pill-btn" type="button" aria-label="Decrease intensity">−</button>
-            <strong id="intensityValue" class="intensity-chip compact-intensity-chip">100%</strong>
+            <strong id="intensityValue" class="compact-intensity-chip">100%</strong>
             <button id="intensityUpBtn" class="ghost compact-pill-btn" type="button" aria-label="Increase intensity">+</button>
           </div>
 
@@ -94,23 +158,15 @@
           <span class="command-divider" aria-hidden="true"></span>
 
           <div class="command-group ride-command-group" aria-label="Ride controls">
-            <button id="startBtn" class="ride-control-btn compact-pill-btn ride-control-ready" disabled>▶</button>
-            <button class="ride-control-btn compact-pill-btn ride-control-pause" id="pauseBtn" disabled>❚❚</button>
-            <button class="ride-control-btn compact-pill-btn ride-control-stop" id="resetBtn" disabled>■</button>
+            <button id="startBtn" class="ride-control-btn compact-pill-btn ride-control-ready" type="button" disabled>▶</button>
+            <button class="ride-control-btn compact-pill-btn ride-control-pause" id="pauseBtn" type="button" disabled>❚❚</button>
+            <button class="ride-control-btn compact-pill-btn ride-control-stop" id="resetBtn" type="button" disabled>■</button>
           </div>
         </div>
 
         <div id="timelineOverlay" class="timeline-overlay" style="display:none"></div>
         <section class="timeline-hud-panel" aria-label="Live workout HUD"></section>
       </div>
-
-      <aside class="ride-controls-column">
-        <div class="main-screen-progress progress-wrap"><div id="progress" class="progress"></div></div>
-
-        <div class="ride-action-stack" id="rideActionStack" data-ride-state="idle">
-          <div id="readyBanner" class="ready-banner">Load a workout, press Ready, then pedal.</div>
-        </div>
-      </aside>
 
       <div class="record-grid">
         <strong id="recordSamples" style="display:none">0</strong>
