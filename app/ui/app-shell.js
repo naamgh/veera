@@ -5,65 +5,15 @@
 
   const style = document.createElement('style');
   style.textContent = `
-    .compact-command-strip{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-      padding:10px 12px;
-      margin-top:8px;
-      border-radius:18px;
-      background:rgba(255,255,255,.04);
-      backdrop-filter:blur(10px);
-    }
-    .command-group{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .command-divider{
-      width:1px;
-      height:28px;
-      background:rgba(148,163,184,.18);
-      flex:0 0 auto;
-    }
-    .compact-pill-btn,
-    .compact-intensity-chip{
-      height:38px;
-      min-height:38px;
-      padding:0 14px;
-      border-radius:999px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:800;
-      font-size:14px;
-      line-height:1;
-    }
-    .compact-pill-btn{
-      border:1px solid rgba(148,163,184,.2);
-      background:rgba(255,255,255,.06);
-      color:inherit;
-      cursor:pointer;
-    }
-    .compact-pill-btn:disabled{
-      opacity:.45;
-    }
-    .compact-intensity-chip{
-      min-width:72px;
-      background:rgba(255,255,255,.08);
-    }
-    .ride-command-group .compact-pill-btn{
-      min-width:38px;
-      padding:0;
-      font-size:16px;
-    }
-    .ride-controls-column,
-    .ride-action-stack,
-    #readyBanner{
-      display:none !important;
-    }
+    .compact-command-strip{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:10px 12px;margin-top:8px;border-radius:18px;background:rgba(255,255,255,.04);backdrop-filter:blur(10px)}
+    .command-group{display:flex;align-items:center;gap:8px}
+    .command-divider{width:1px;height:28px;background:rgba(148,163,184,.18);flex:0 0 auto}
+    .compact-pill-btn,.compact-intensity-chip{height:38px;min-height:38px;padding:0 14px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;line-height:1}
+    .compact-pill-btn{border:1px solid rgba(148,163,184,.2);background:rgba(255,255,255,.06);color:inherit;cursor:pointer}
+    .compact-pill-btn:disabled{opacity:.45}
+    .compact-intensity-chip{min-width:72px;background:rgba(255,255,255,.08)}
+    .ride-command-group .compact-pill-btn{min-width:42px;padding:0;font-size:16px;opacity:1 !important;visibility:visible !important;display:inline-flex !important}
+    .ride-controls-column,.ride-action-stack,#readyBanner{display:none !important}
   `;
   document.head.appendChild(style);
 
@@ -84,15 +34,12 @@
         <span><i class="key-icon wide">SPC</i> Pause</span>
         <span><i class="key-icon">↑</i> + intensity</span>
         <span><i class="key-icon">↓</i> − intensity</span>
-        <span><i class="key-icon">←</i> Hide Menu</span>
-        <span><i class="key-icon">→</i> Show Menu</span>
       </div>
     </div>
 
     <div class="card">
       <label for="ftpInput">FTP</label>
       <input id="ftpInput" type="number" value="250" min="50" max="600">
-      <p class="small">Used to convert ZWO % FTP targets into watts.</p>
     </div>
 
     <div class="card">
@@ -106,6 +53,9 @@
 
     <div class="card workout-library-card">
       <button id="openSavedWorkoutsBtn" class="secondary" type="button">Workouts</button>
+      <button id="importSaveZwoBtn" class="secondary import-save-btn" type="button">Import & Save ZWO</button>
+      <input id="importSaveZwoInput" type="file" accept=".zwo,.xml" style="display:none;">
+      <div id="importSaveStatus" style="display:none"></div>
     </div>
 
     <div style="display:none" aria-hidden="true">
@@ -114,9 +64,11 @@
       <span id="ergStatus"></span>
       <button id="ergOffBtn" type="button"></button>
     </div>
+
     <div id="ftmsLog" class="log" style="display:none">Debug log hidden</div>
 
     <input id="zwoInput" type="file" accept=".zwo,.xml" style="display:none;">
+
     <div style="display:none" aria-hidden="true">
       <span id="zwoDot" class="dot"></span>
       <span id="zwoStatus">No workout loaded</span>
@@ -127,40 +79,42 @@
 
   <section class="main">
     <span id="speedVal" class="metric-number" style="display:none">--</span>
+
     <div class="player">
       <div class="timeline">
         <button id="rideModeBtn" type="button" style="display:none" disabled></button>
         <span id="elapsedText" style="display:none">0:00</span>
         <span id="totalText" style="display:none">0:00</span>
         <span id="currentBlockDetailText" style="display:none">--</span>
+
         <canvas id="graph" width="1200" height="420"></canvas>
 
         <div class="interval-edit-controls compact-command-strip" id="intervalEditControls" aria-label="Workout command strip">
-          <div class="command-group intensity-command-group" aria-label="Intensity control">
-            <button id="intensityDownBtn" class="ghost compact-pill-btn" type="button" aria-label="Decrease intensity">−</button>
+          <div class="command-group intensity-command-group">
+            <button id="intensityDownBtn" class="compact-pill-btn" type="button">−</button>
             <strong id="intensityValue" class="compact-intensity-chip">100%</strong>
-            <button id="intensityUpBtn" class="ghost compact-pill-btn" type="button" aria-label="Increase intensity">+</button>
+            <button id="intensityUpBtn" class="compact-pill-btn" type="button">+</button>
           </div>
 
-          <span class="command-divider" aria-hidden="true"></span>
+          <span class="command-divider"></span>
 
           <div class="command-group">
-            <button id="skipIntervalBtn" class="ghost compact-pill-btn" type="button" disabled>Skip Interval</button>
+            <button id="skipIntervalBtn" class="compact-pill-btn" type="button">Skip Interval</button>
           </div>
 
-          <span class="command-divider" aria-hidden="true"></span>
+          <span class="command-divider"></span>
 
           <div class="command-group">
-            <button id="extendInterval1Btn" class="ghost compact-pill-btn" type="button" disabled>+1 min</button>
-            <button id="extendInterval5Btn" class="ghost compact-pill-btn" type="button" disabled>+5 min</button>
+            <button id="extendInterval1Btn" class="compact-pill-btn" type="button">+1 min</button>
+            <button id="extendInterval5Btn" class="compact-pill-btn" type="button">+5 min</button>
           </div>
 
-          <span class="command-divider" aria-hidden="true"></span>
+          <span class="command-divider"></span>
 
-          <div class="command-group ride-command-group" aria-label="Ride controls">
-            <button id="startBtn" class="ride-control-btn compact-pill-btn ride-control-ready" type="button" disabled>▶</button>
-            <button class="ride-control-btn compact-pill-btn ride-control-pause" id="pauseBtn" type="button" disabled>❚❚</button>
-            <button class="ride-control-btn compact-pill-btn ride-control-stop" id="resetBtn" type="button" disabled>■</button>
+          <div class="command-group ride-command-group">
+            <button id="startBtn" class="compact-pill-btn" type="button">▶</button>
+            <button id="pauseBtn" class="compact-pill-btn" type="button">❚❚</button>
+            <button id="resetBtn" class="compact-pill-btn" type="button">■</button>
           </div>
         </div>
 
