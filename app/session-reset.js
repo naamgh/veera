@@ -1,10 +1,13 @@
-// Modal shell required before main.js binds event listeners.
+// Restores modal/button markup required by main.js before it binds events.
 (function(){
   const saved = document.getElementById('savedWorkoutsModal');
   if(saved && !document.getElementById('closeSavedWorkoutsBtn')){
     saved.innerHTML = `
       <div class="saved-workouts-head">
-        <div><strong>Workouts</strong><span>Browse, filter, tag and load your training sessions</span></div>
+        <div>
+          <strong>Workouts</strong>
+          <span>Browse, filter, tag and load your training sessions</span>
+        </div>
         <button id="closeSavedWorkoutsBtn" class="ghost icon-btn" type="button">×</button>
       </div>
       <div class="saved-workouts-content">
@@ -49,7 +52,10 @@
   if(end && !document.getElementById('closeWorkoutEndBtn')){
     end.innerHTML = `
       <div class="workout-end-head">
-        <div><strong id="workoutEndTitle">Workout Complete</strong><span id="workoutEndSubtitle">Ride summary</span></div>
+        <div>
+          <strong id="workoutEndTitle">Workout Complete</strong>
+          <span id="workoutEndSubtitle">Ride summary</span>
+        </div>
         <button id="closeWorkoutEndBtn" class="ghost icon-btn" type="button">×</button>
       </div>
       <div class="workout-end-content">
