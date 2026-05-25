@@ -1184,17 +1184,11 @@ function setupGraphResizeRedraw(){
 }
 
 function redrawGraphDuringLayoutAnimation(duration = 460){
-  const start = performance.now ? performance.now() : Date.now();
+  clearTimeout(window.__graphResizeTimer);
 
-  function tick(now){
+  window.__graphResizeTimer = setTimeout(()=>{
     drawGraph(currentElapsed());
-
-    if(now - start < duration){
-      requestAnimationFrame(tick);
-    }
-  }
-
-  requestAnimationFrame(tick);
+  }, duration + 20);
 }
 
 function updateFeedback(){
