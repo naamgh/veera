@@ -14,7 +14,6 @@
   <div id="stopConfirmModal" class="modal"></div>
 
   <script>
-    // Modal shell required before main.js binds event listeners.
     (function(){
       const saved = document.getElementById('savedWorkoutsModal');
       if(saved && !document.getElementById('closeSavedWorkoutsBtn')){
@@ -51,6 +50,14 @@
   </script>
 
   <script src="./ui/app-shell.js"></script>
+  <script src="./core/hud.js"></script>
+  <script src="./core/keyboard.js"></script>
+  <script src="./timeline/timeline-controls.js"></script>
+  <script src="./core/legacy-ride-mode-cleanup.js"></script>
   <script src="./main.js"></script>
+  <script src="./core/audio.js"></script>
+  <script src="./timeline/timeline-renderer.js"></script>
+  <script src="./workout/session-reset.js"></script>
+  <script src="./export/share-card.js"></script>
 </body>
 </html>
