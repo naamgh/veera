@@ -2424,9 +2424,9 @@ body.dark .metric.connect-cta .label{
   letter-spacing:.01em;
 }
 .shortcut-legend span{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
   white-space:nowrap;
 }
 .key-icon{
@@ -2436,7 +2436,7 @@ body.dark .metric.connect-cta .label{
   height:22px;
   padding:0 7px;
   border-radius:7px;
-  border:1px solid color-mix(in srgb, var(--muted) 24%, transparent);
+  border:0px solid color-mix(in srgb, var(--muted) 24%, transparent);
   background:linear-gradient(180deg, rgba(255,255,255,.82), rgba(241,245,249,.72));
   color:color-mix(in srgb, var(--muted) 88%, var(--ink));
   font-size:13px;
