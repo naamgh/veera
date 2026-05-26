@@ -16,12 +16,11 @@
     <div class="card shortcut-card">
       <p class="shortcut-card-title">Keyboard shortcuts</p>
       <div class="shortcut-legend" aria-label="Keyboard shortcuts">
-        <span><i class="key-icon">↵</i> Ready</span>
-        <span><i class="key-icon wide">SPC</i> Pause</span>
-        <span><i class="key-icon">↑</i> + intensity</span>
-        <span><i class="key-icon">↓</i> − intensity</span>
-        <span><i class="key-icon">←</i> Hide Menu</span>
-        <span><i class="key-icon">→</i> Show Menu</span>
+        <span><i class="key-icon">ENTER</i> Ready</span>
+        <span><i class="key-icon wide">SPACE</i> Pause</span>
+        <span><i class="key-icon">F</i> Fullscreen</span>
+        <span><i class="key-icon">↑↓</i> +/- intensity</span>
+        <span><i class="key-icon">←→</i> Show/Hide Menu</span>
       </div>
     </div>
 
