@@ -2411,16 +2411,15 @@ body.dark .metric.connect-cta .label{
   text-transform:uppercase;
 }
 .shortcut-legend{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:8px 10px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px 12px;
   margin:0;
   padding:0;
   color:color-mix(in srgb, var(--muted) 72%, transparent);
   font-size:10.5px;
   line-height:1.2;
-  font-weight:850;
+  font-weight:550;
   letter-spacing:.01em;
 }
 .shortcut-legend span{
@@ -2433,9 +2432,9 @@ body.dark .metric.connect-cta .label{
   place-items:center;
   min-width:25px;
   height:22px;
-  padding:0 7px;
+  padding:0 0px;
   border-radius:7px;
-  border:0px solid color-mix(in srgb, var(--muted) 24%, transparent);
+  border:1px solid color-mix(in srgb, var(--muted) 24%, transparent);
   background:linear-gradient(180deg, rgba(255,255,255,.82), rgba(241,245,249,.72));
   color:color-mix(in srgb, var(--muted) 88%, var(--ink));
   font-size:13px;
