@@ -11,7 +11,7 @@
     btn.setAttribute('aria-label','Toggle fullscreen');
     btn.textContent = '⛶';
 
-    btn.addEventListener('click', async ()=>{
+    async function toggleFullscreen(){
       try{
         if(!document.fullscreenElement){
           await document.documentElement.requestFullscreen();
@@ -22,6 +22,19 @@
         }
       }catch(err){
         console.warn('Fullscreen toggle failed', err);
+      }
+    }
+
+    btn.addEventListener('click', toggleFullscreen);
+
+    document.addEventListener('keydown', async (e)=>{
+      const tag = (document.activeElement?.tagName || '').toLowerCase();
+
+      if(tag === 'input' || tag === 'textarea') return;
+
+      if(e.key.toLowerCase() === 'f'){
+        e.preventDefault();
+        toggleFullscreen();
       }
     });
 
