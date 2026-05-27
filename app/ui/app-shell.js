@@ -62,17 +62,14 @@
 
         <div class="interval-edit-controls" id="intervalEditControls" aria-label="Interval controls">
           <div class="inline-intensity-control" aria-label="Intensity control">
-            <label for="intensitySlider">Intensity</label>
-            <input id="intensitySlider" type="range" min="50" max="150" value="100">
-            <strong id="intensityValue" class="intensity-chip">100%</strong>
             <button id="intensityDownBtn" class="ghost icon-btn inline-intensity-btn" type="button" aria-label="Decrease intensity">−</button>
+            <strong id="intensityValue" class="intensity-chip">100%</strong>
             <button id="intensityUpBtn" class="ghost icon-btn inline-intensity-btn" type="button" aria-label="Increase intensity">+</button>
           </div>
           <span class="interval-edit-divider inline-intensity-divider" aria-hidden="true"></span>
           <button id="skipIntervalBtn" class="ghost interval-edit-btn" type="button" disabled>Skip interval</button>
           <span class="interval-edit-divider" aria-hidden="true"></span>
           <button id="extendInterval1Btn" class="ghost interval-edit-btn" type="button" disabled>+1:00</button>
-          <button id="extendInterval25Btn" class="ghost interval-edit-btn" type="button" disabled>+2:30</button>
           <button id="extendInterval5Btn" class="ghost interval-edit-btn" type="button" disabled>+5:00</button>
         </div>
 
