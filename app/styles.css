@@ -3378,7 +3378,7 @@ body.dark .detached-hud-panel:before{border-color:rgba(255,255,255,.06);}
 .interval-edit-divider{
   width:1px;
   height:18px;
-  margin:0 6px;
+  margin:0 26px;
   background:linear-gradient(
     180deg,
     rgba(148,163,184,.35),
