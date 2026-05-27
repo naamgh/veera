@@ -62,6 +62,8 @@
 
         <div class="interval-edit-controls" id="intervalEditControls" aria-label="Interval controls">
           <div class="inline-intensity-control" aria-label="Intensity control">
+                      <label for="intensitySlider">Intensity</label>
+            <input id="intensitySlider" type="range" min="50" max="150" value="100">
             <button id="intensityDownBtn" class="ghost icon-btn inline-intensity-btn" type="button" aria-label="Decrease intensity">−</button>
             <strong id="intensityValue" class="intensity-chip">100%</strong>
             <button id="intensityUpBtn" class="ghost icon-btn inline-intensity-btn" type="button" aria-label="Increase intensity">+</button>
