@@ -12,21 +12,11 @@
         <label class="switch-row" title="Dark mode"><span>Dark</span><input id="darkModeToggle" type="checkbox"><i></i></label>
       </div>
     </div>
-
-    <div class="card shortcut-card">
-      <p class="shortcut-card-title">Keyboard shortcuts</p>
-      <div class="shortcut-legend" aria-label="Keyboard shortcuts">
-        <span><i class="key-icon">ENTER</i> Ready</span>
-        <span><i class="key-icon wide">SPACE</i> Pause</span>
-        <span><i class="key-icon">F</i> Fullscreen</span>
-        <span><i class="key-icon">↑↓</i> +/- intensity</span>
-        <span><i class="key-icon">←→</i> Show/Hide Menu</span>
-      </div>
     </div>
 
     <div class="card">
       <label for="ftpInput">FTP</label>
-      <input id="ftpInput" type="number" value="250" min="50" max="600">
+      <input id="ftpInput" type="number" value="220" min="50" max="600">
       <p class="small">Used to convert ZWO % FTP targets into watts.</p>
     </div>
 
@@ -146,6 +136,15 @@
           </div>
           <div id="readyBanner" class="ready-banner">Load a workout, press Ready, then pedal.</div>
         </div>
+            <div class="card shortcut-card">
+      <p class="shortcut-card-title">Keyboard shortcuts</p>
+      <div class="shortcut-legend" aria-label="Keyboard shortcuts">
+        <span><i class="key-icon">ENTER</i> Ready</span>
+        <span><i class="key-icon wide">SPACE</i> Pause</span>
+        <span><i class="key-icon">F</i> Fullscreen</span>
+        <span><i class="key-icon">↑↓</i> +/- intensity</span>
+        <span><i class="key-icon">←→</i> Show/Hide Menu</span>
+      </div>
 
         <div class="mini-controls"></div>
 
