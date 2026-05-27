@@ -3892,6 +3892,7 @@ body.dark .timeline-hud-panel .cadence-icon{
   border:0;
   box-shadow:none;
   backdrop-filter:none;
+  display:none;
 }
 .inline-intensity-control label{
   position:absolute !important;
