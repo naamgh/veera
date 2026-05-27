@@ -6434,7 +6434,7 @@ body:not(.ride-mode) .timeline-control-dock #intensitySlider{
   margin:0 !important;
   padding:0 !important;
 
-  display:block !important;
+  display:none !important;
 }
 
 /* Plain percentage text */
@@ -6596,7 +6596,7 @@ body:not(.ride-mode) .timeline-control-dock #intensitySlider{
   max-height:36px !important;
   padding:0 !important;
   border:0 !important;
-  display:block !important;
+  display:none !important;
 }
 
 /* Plain percentage text, no card */
