@@ -3378,8 +3378,16 @@ body.dark .detached-hud-panel:before{border-color:rgba(255,255,255,.06);}
 }
 .interval-edit-divider{
   width:1px;
-  height:28px;
-  background:linear-gradient(180deg, transparent, rgba(148,163,184,.35), transparent);
+  height:18px;
+  margin:0 6px;
+  background:linear-gradient(
+    180deg,
+    transparent,
+    rgba(148,163,184,.35),
+    transparent
+  );
+  align-self:center;
+  flex:0 0 auto;
 }
 body.dark .interval-edit-btn{
   background:rgba(15,23,42,.56) !important;
