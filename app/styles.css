@@ -3382,9 +3382,7 @@ body.dark .detached-hud-panel:before{border-color:rgba(255,255,255,.06);}
   margin:0 6px;
   background:linear-gradient(
     180deg,
-    transparent,
     rgba(148,163,184,.35),
-    transparent
   );
   align-self:center;
   flex:0 0 auto;
