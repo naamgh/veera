@@ -647,10 +647,9 @@ input[type=range]{
   border-radius:18px;
 }
 .intensity-control-row{
-  display:grid;
-  grid-template-columns:auto 1fr auto auto auto;
-  gap:10px;
+  display:flex;
   align-items:center;
+  gap:8px;
 }
 .intensity-control-row label{
   margin:0;
