@@ -3901,6 +3901,7 @@ body.dark .timeline-hud-panel .cadence-icon{
   overflow:hidden !important;
   clip:rect(0 0 0 0) !important;
   white-space:nowrap !important;
+    display:none;
 }
 .inline-intensity-control input[type=range]{
   min-width:0;
@@ -3909,6 +3910,7 @@ body.dark .timeline-hud-panel .cadence-icon{
   padding:0;
   margin:0;
   background:transparent;
+  display:none;
 }
 .inline-intensity-control .intensity-chip{
   display:inline-flex;
