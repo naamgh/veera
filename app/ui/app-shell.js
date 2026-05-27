@@ -61,13 +61,27 @@
         <canvas id="graph" width="1200" height="420"></canvas>
 
         <div class="interval-edit-controls" id="intervalEditControls" aria-label="Interval controls">
-          <div class="inline-intensity-control" aria-label="Intensity control">
-                      <label for="intensitySlider">Intensity</label>
-            <input id="intensitySlider" type="range" min="50" max="150" value="100">
-            <button id="intensityDownBtn" class="ghost icon-btn inline-intensity-btn" type="button" aria-label="Decrease intensity">−</button>
-            <strong id="intensityValue" class="intensity-chip">100%</strong>
-            <button id="intensityUpBtn" class="ghost icon-btn inline-intensity-btn" type="button" aria-label="Increase intensity">+</button>
-          </div>
+<div class="inline-intensity-control" aria-label="Intensity control">
+  <button id="intensityDownBtn"
+    class="ghost icon-btn inline-intensity-btn"
+    type="button"
+    aria-label="Decrease intensity">−</button>
+
+  <strong id="intensityValue"
+    class="intensity-chip">100%</strong>
+
+  <button id="intensityUpBtn"
+    class="ghost icon-btn inline-intensity-btn"
+    type="button"
+    aria-label="Increase intensity">+</button>
+
+  <input id="intensitySlider"
+    type="range"
+    min="50"
+    max="150"
+    value="100"
+    style="display:none;">
+</div>
           <span class="interval-edit-divider inline-intensity-divider" aria-hidden="true"></span>
           <button id="skipIntervalBtn" class="ghost interval-edit-btn" type="button" disabled>Skip interval</button>
           <span class="interval-edit-divider" aria-hidden="true"></span>
