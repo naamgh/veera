@@ -2540,8 +2540,9 @@ function exportTCX(){
     return dist + (s.speedKph * 1000 / 3600) * dt;
   }, 0);
   const calories = Math.round((avgPower || 120) * totalSec / 4184);
-
-  const trackpoints = valid.map(s=>{
+  
+  let cumulativeDistance = 0;
+  const trackpoints = valid.map((s, i)=>{
     const hr = Number.isFinite(s.heartRate) ? `<HeartRateBpm><Value>${Math.round(s.heartRate)}</Value></HeartRateBpm>` : "";
     const cad = Number.isFinite(s.cadence) ? `<Cadence>${Math.round(s.cadence)}</Cadence>` : "";
     const spd = Number.isFinite(s.speedKph) ? `<Speed>${(s.speedKph / 3.6).toFixed(3)}</Speed>` : "";
@@ -2549,6 +2550,17 @@ function exportTCX(){
     const target = Number.isFinite(s.targetPower) ? `<ns3:TargetWatts>${Math.round(s.targetPower)}</ns3:TargetWatts>` : "";
     const pct = Number.isFinite(s.targetPct) ? `<ns3:TargetFTPPercent>${Math.round(s.targetPct)}</ns3:TargetFTPPercent>` : "";
     const interval = s.interval ? `<ns3:Interval>${escapeXml(s.interval)}</ns3:Interval>` : "";
+    if(i > 0 && Number.isFinite(s.speedKph)){
+  const prev = valid[i - 1];
+  const dt = Math.max(
+    0,
+    (new Date(s.time) - new Date(prev.time)) / 1000
+  );
+
+  cumulativeDistance += (s.speedKph * 1000 / 3600) * dt;
+}
+
+const dist = `<DistanceMeters>${cumulativeDistance.toFixed(1)}</DistanceMeters>`;
     const extensions = (spd || pwr || target || pct || interval) ? `
           <Extensions>
             <ns3:TPX>
@@ -2559,12 +2571,13 @@ function exportTCX(){
               ${interval}
             </ns3:TPX>
           </Extensions>` : "";
-    return `        <Trackpoint>
-          <Time>${s.time}</Time>
-          ${hr}
-          ${cad}
-          ${extensions}
-        </Trackpoint>`;
+return `        <Trackpoint>
+  <Time>${s.time}</Time>
+  ${dist}
+  ${hr}
+  ${cad}
+  ${extensions}
+</Trackpoint>`;
   }).join("\n");
 
   const name = loadedName || "Indoor Trainer Workout";
