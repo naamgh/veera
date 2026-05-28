@@ -6909,3 +6909,22 @@ body.sidebar-collapsed:not(.ride-mode) .timeline-control-dock #intensitySlider{
   min-width:280px !important;
   max-width:280px !important;
 }
+
+
+/* Intensity button interaction fix */
+.inline-intensity-btn{
+  position:relative;
+  z-index:5;
+  pointer-events:auto;
+  flex:0 0 auto;
+}
+
+#intensitySlider{
+  display:none !important;
+  pointer-events:none !important;
+  width:0 !important;
+  height:0 !important;
+  opacity:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
