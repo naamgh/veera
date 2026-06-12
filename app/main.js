@@ -2590,7 +2590,7 @@ valid.forEach(sample => {
       </Lap>`;
 }).join("\n");
 
-  console.log(lapXml);
+console.log("Generated laps:", laps.length);
   
   let cumulativeDistance = 0;
   const trackpoints = valid.map((s, i)=>{
