@@ -2557,6 +2557,14 @@ valid.forEach(sample => {
 
   currentLap.samples.push(sample);
 });
+
+  console.log(
+  "TCX laps:",
+  laps.map(l => ({
+    name: l.name,
+    samples: l.samples.length
+  }))
+);
   
   let cumulativeDistance = 0;
   const trackpoints = valid.map((s, i)=>{
