@@ -2565,6 +2565,32 @@ valid.forEach(sample => {
     samples: l.samples.length
   }))
 );
+
+  const lapXml = laps.map(lap => {
+  const lapStart = lap.samples[0].time;
+
+  const lapDuration = Math.max(
+    1,
+    Math.round(
+      (new Date(lap.samples[lap.samples.length - 1].time) -
+       new Date(lap.samples[0].time)) / 1000
+    )
+  );
+
+  return `
+      <Lap StartTime="${lapStart}">
+        <TotalTimeSeconds>${lapDuration}</TotalTimeSeconds>
+        <DistanceMeters>0</DistanceMeters>
+        <Calories>0</Calories>
+        <Intensity>Active</Intensity>
+        <TriggerMethod>Manual</TriggerMethod>
+        <Track>
+          <!-- TRACKPOINTS WILL GO HERE -->
+        </Track>
+      </Lap>`;
+}).join("\n");
+
+  console.log(lapXml);
   
   let cumulativeDistance = 0;
   const trackpoints = valid.map((s, i)=>{
