@@ -2540,6 +2540,23 @@ function exportTCX(){
     return dist + (s.speedKph * 1000 / 3600) * dt;
   }, 0);
   const calories = Math.round((avgPower || 120) * totalSec / 4184);
+
+  const laps = [];
+let currentLap = null;
+
+valid.forEach(sample => {
+  const lapName = sample.interval || "Ride";
+
+  if (!currentLap || currentLap.name !== lapName) {
+    currentLap = {
+      name: lapName,
+      samples: []
+    };
+    laps.push(currentLap);
+  }
+
+  currentLap.samples.push(sample);
+});
   
   let cumulativeDistance = 0;
   const trackpoints = valid.map((s, i)=>{
